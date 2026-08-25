@@ -26,8 +26,10 @@ jobs:
         shell: julia --color=yes --project=docs {0}
         run: |
           using Pkg
-          Pkg.develop(url = "https://github.com/LiWuR/GEM.jl")
-          Pkg.develop(PackageSpec(path=pwd()))
+          Pkg.develop([
+              PackageSpec(url = "https://github.com/LiWuR/GEM.jl"),
+              PackageSpec(path = pwd()),
+          ])
           Pkg.instantiate()
       - name: Build and deploy documentation
         run: julia --color=yes --project=docs docs/make.jl
