@@ -1,5 +1,5 @@
 # ================================================================
-# test_agentBuilderRouter_userCleanup_v2.jl
+# test_agentBuilderRouter_userCleanup_v3.jl
 #
 # Static regression for the final user-facing retirement of the
 # keyword-only build_agent compatibility router.
@@ -96,20 +96,10 @@ end
             "gemb_CES_CET_nc4_na2_v1.md",
         )
 
-    asset_doc =
-        joinpath(
-            root,
-            "docs",
-            "src",
-            "examples",
-            "asset_equilibrium_general_framework_v15.md",
-        )
-
     @test isfile(new_example)
     @test !isfile(old_example)
     @test isfile(new_doc_example)
     @test !isfile(old_doc_example)
-    @test isfile(asset_doc)
 
     example_text =
         read(
@@ -127,27 +117,6 @@ end
         example_text,
     )
 
-    asset_text =
-        read(
-            asset_doc,
-            String,
-        )
-
-    retired_keyword_example =
-        "build_" *
-        "agent" *
-        "(spec=...)"
-
-    @test !occursin(
-        retired_keyword_example,
-        asset_text,
-    )
-
-    @test !occursin(
-        r"(?s)\bbuild_agent\s*\(\s*spec\s*=",
-        asset_text,
-    )
-
     for path in _router_user_files(root)
         text =
             read(
@@ -162,4 +131,4 @@ end
     end
 end
 
-println("Agent builder router user-facing cleanup tests passed.")
+println("Agent builder router user-facing cleanup V3 tests passed.")

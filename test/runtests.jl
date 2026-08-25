@@ -7,7 +7,7 @@ using GEMB
     include("test_claimSemanticGenerality_v4.jl")
     include("test_claimInterfaceUserFacingCleanup_v2.jl")
     include("test_claimInterfaceCoreCleanup_v2.jl")
-    include("test_agentBuilderRouter_userCleanup_v2.jl")
+    include("test_agentBuilderRouter_userCleanup_v3.jl")
     include("test_relativeRefFileCleanup_v1.jl")
     include("test_intertemporalDocsPublicAPI_v3.jl")
     include("test_relativeAgentRefs_step7c2fix_v1.jl")
