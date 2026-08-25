@@ -1,0 +1,19 @@
+authors = ["LiWuR <liwu.shu@qq.com>"]
+name = "GEMB"
+uuid = "b639f512-41f5-43cc-afd3-83d881fb6b82"
+version = "0.1.0-DEV"
+
+[compat]
+GEM = "0.1"
+LinearAlgebra = "1"
+julia = "1.10"
+
+[deps]
+GEM = "b8b2a47b-24dc-44c6-a18d-1d09802f14f0"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]

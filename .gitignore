@@ -1,0 +1,7 @@
+/Manifest.toml
+/docs/Manifest.toml
+/docs/build/
+*.before_*
+*.jl.cov
+*.jl.*.cov
+*.jl.mem
