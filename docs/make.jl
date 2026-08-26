@@ -1,193 +1,122 @@
-using GEMB
 using Documenter
-import Glob
+using GeneralEquilibriumModeling
+using GeneralEquilibriumModeling.GEM
+using GeneralEquilibriumModeling.GEMB
 
-# ========== Recursively discover GEMB submodules ==========
-
-"Return a dictionary containing a module and all of its GEMB submodules."
-function get_all_submodules(
-    mod::Module,
-    found::Dict{String,Module}=Dict{String,Module}(),
-)
-    # Register the current module before traversing its bindings.
-    fullname_string = join(fullname(mod), ".")
-    haskey(found, fullname_string) && return found
-    found[fullname_string] = mod
-
-    # Inspect all defined bindings in the current module.
-    for name in names(mod, all=true)
-        # Skip compiler-generated and module-internal bindings.
-        startswith(string(name), "#") && continue
-        name == :eval && continue
-        name == :include && continue
-        isdefined(mod, name) || continue
-
-        object = getfield(mod, name)
-        object isa Module || continue
-
-        # Traverse only modules that belong to the GEMB namespace.
-        object_fullname = join(fullname(object), ".")
-        if object_fullname == "GEMB" || startswith(object_fullname, "GEMB.")
-            get_all_submodules(object, found)
-        end
-    end
-
-    return found
-end
-
-# Collect and sort all modules by their fully qualified names.
-all_modules = get_all_submodules(GEMB)
-modules_to_document = collect(all_modules)
-sort!(modules_to_document, by=first)
-
-println("Discovered $(length(modules_to_document)) GEMB modules:")
-for (name, _) in modules_to_document
-    println("  - ", name)
-end
-
-# ========== Generate example pages ==========
-
-examples_directory = joinpath(@__DIR__, "..", "examples")
-examples_source_directory = joinpath(@__DIR__, "src", "examples")
-mkpath(examples_source_directory)
-
-# Continue building the manual even when the package has no examples directory.
-julia_files = if isdir(examples_directory)
-    Glob.glob("*.jl", examples_directory)
-else
-    @warn "Examples directory does not exist; no example pages will be generated." examples_directory
-    String[]
-end
-sort!(julia_files)
-
-example_pages = Pair{String,String}[]
-
-for julia_file in julia_files
-    # Derive the page title and output filename from the Julia source filename.
-    base_name = basename(julia_file)
-    name_without_extension = splitext(base_name)[1]
-    markdown_filename = "$(name_without_extension).md"
-    markdown_filepath = joinpath(
-        examples_source_directory,
-        markdown_filename,
-    )
-
-    julia_content = read(julia_file, String)
-
-    # Display the complete example as source code without executing it.
-    # Four backticks allow embedded docstrings to contain triple-backtick blocks.
-    markdown_content = """
-    # $(name_without_extension)
-
-    Source file: `examples/$(base_name)`
-
-    ````julia
-    $(julia_content)
-    ````
-    """
-
-    write(markdown_filepath, markdown_content)
-    push!(
-        example_pages,
-        name_without_extension => "examples/$(markdown_filename)",
-    )
-end
-
-# ========== Generate API reference pages ==========
-
-api_source_directory = joinpath(@__DIR__, "src", "api")
-mkpath(api_source_directory)
-
-# API pages in this directory are generated files. Remove pages from earlier
-# module layouts before regenerating the current API reference. This prevents
-# Documenter from evaluating stale @autodocs blocks for modules that no longer
-# exist.
-for stale_api_page in readdir(
-    api_source_directory;
-    join=true,
-)
-    endswith(
-        stale_api_page,
-        ".md",
-    ) || continue
-
-    rm(
-        stale_api_page;
-        force=true,
-    )
-end
-
-api_subpages = Pair{String,String}[]
-
-for (module_name, _) in modules_to_document
-    # Convert the fully qualified module name into a filesystem-safe name.
-    filename = replace(module_name, "." => "_") * ".md"
-    filepath = joinpath(api_source_directory, filename)
-
-    # Include the module docstring as well as its documented public objects.
-    content = """
-    # `$(module_name)`
-
-    ```@autodocs
-    Modules = [$(module_name)]
-    Order = [:module, :type, :function, :macro, :constant]
-    ```
-    """
-
-    write(filepath, content)
-    push!(api_subpages, module_name => "api/$(filename)")
-end
-
-# ========== Assemble the navigation tree ==========
-
-pages_list = Any[
+# BEGIN GENERATED NAVIGATION
+DOC_PAGES = [
     "Home" => "index.md",
+    "GEM" => [
+        "Overview" => "gem/index.md",
+        "API Reference" => [
+            "API index" => "gem/api.md",
+            "Core API" => [
+                "Public API" => "gem/api/GEM.md",
+                "Agents and condition rules" => "gem/api/GEM_EquilibriumAgentCoreV1.md",
+                "Equilibrium models" => "gem/api/GEM_EquilibriumNetSupplyModelV11.md",
+                "Variable references" => "gem/api/GEM_EquilibriumVariableRefsV3.md",
+                "Production conditions" => "gem/api/GEM_ProducerConditionsV1.md",
+                "Marginal-utility conditions" => "gem/api/GEM_EquilibriumMarginalUtilityModelV5.md",
+                "Production net supply" => "gem/api/GEM_ProductionNetSupplyV1.md",
+                "Equilibrium results" => "gem/api/GEM_EquilibriumResultV1.md",
+            ],
+            "Auxiliary system" => [
+                "Auxiliary variables" => "gem/api/GEM_AuxiliaryVariablesV1.md",
+                "Auxiliary equations" => "gem/api/GEM_AuxiliaryEquationsV4.md",
+                "Auxiliary-equation JuMP support" => "gem/api/GEM_AuxiliaryEquationJumpV1.md",
+            ],
+            "JuMP and solver" => [
+                "Equilibrium JuMP model" => "gem/api/GEM_EquilibriumJumpModelV2.md",
+                "MCP solver" => "gem/api/GEM_EquilibriumModelSolverV10V19.md",
+            ],
+        ],
+        "Examples" => [
+            "Cobb–Douglas exchange" => "gem/examples/gem_CD_consumerNoVariables_nc2_na2.md",
+            "Cost-minimization KKT" => "gem/examples/gem_CD_costMinKKT_nc2_na2.md",
+            "Explicit conditions" => "gem/examples/gem_CD_explicitConditions_nc2_na2.md",
+            "Marginal utility" => "gem/examples/gem_CD_marginalUtility_nc2_na2.md",
+            "Ad valorem claim" => "gem/examples/gem_CD_adValoremClaim_consumerNoVariables_nc3_na2.md",
+            "Specific subsidy via claim" => "gem/examples/gem_CD_specificSubsidyClaim_consumerNoVariables_nc3_na2.md",
+            "Externality and observed variables" => "gem/examples/gem_CD_externality_observedVariable_consumerNoVariables_nc2_na2.md",
+            "Pollution with negative price" => "gem/examples/gem_pollution_negativePrice_nc3_na2.md",
+            "von Neumann multi-activity" => "gem/examples/gem_vonNeumann_multiActivity_nc2_na1.md",
+        ],
+    ],
+    "GEMB" => [
+        "Overview" => "gemb/index.md",
+        "Guides" => [
+            "Ad valorem claims" => "gemb/ad_valorem_claims.md",
+            "Condition agents" => "gemb/condition_agents.md",
+            "Intertemporal equilibrium" => "gemb/intertemporal_equilibrium.md",
+        ],
+        "API Reference" => [
+            "API index" => "gemb/api.md",
+            "Public API" => "gemb/api/GEMB.md",
+            "Specifications and economic functions" => "gemb/api/GEMB_Specifications.md",
+            "Agent builders and condition agents" => "gemb/api/GEMB_AgentBuilders.md",
+            "High-level model and intertemporal API" => "gemb/api/GEMB_ModelingFramework.md",
+            "Asset equilibrium" => "gemb/api/GEMB_AssetEquilibrium.md",
+        ],
+        "Examples" => [
+            "Core and static models" => [
+                "CES" => "gemb/examples/gemb_CES_nc2_na2_v4.md",
+                "CES with tax" => "gemb/examples/gemb_CES_tax_nc4_na3_v3.md",
+                "CES–CET" => "gemb/examples/gemb_CES_CET_nc4_na2_v2.md",
+                "Activity-demand Cobb–Douglas" => "gemb/examples/gemb_activityDemand_CD_nc2_na2_v2.md",
+                "Explicit condition rule" => "gemb/examples/gemb_conditionRule_explicit_nc2_na2_v1.md",
+                "Unit-profit condition rule" => "gemb/examples/gemb_conditionRule_unitProfit_nc2_na2_v2.md",
+            ],
+            "Claims and taxes" => [
+                "Specific subsidy via claim" => "gemb/examples/gemb_CD_specificSubsidyClaim_nc3_na2_v1.md",
+                "Endogenous claim rate I" => "gemb/examples/gemb_CD_endogenousClaimRate_nc3_na3_v1.md",
+                "Endogenous claim rate II" => "gemb/examples/gemb_CD_endogenousClaimRate_nc3_na3_v2.md",
+                "Budget-balanced claim rate I" => "gemb/examples/gemb_CD_endogenousClaimRateBudget_nc3_na4_v1.md",
+                "Budget-balanced claim rate II" => "gemb/examples/gemb_CD_endogenousClaimRateBudget_nc3_na4_v2.md",
+            ],
+            "Virtual-agent constructions" => [
+                "Exogenous land price" => "gemb/examples/gemb_exogenousLandPrice_nc3_na3_v6.md",
+                "Virtual-agent land-price model" => "gemb/examples/gemb_exogenousLandPrice_virtualAgent_nc3_na3_v3.md",
+            ],
+            "Asset equilibrium" => [
+                "Asset equilibrium (AMSD)" => "gemb/examples/gemb_assetEquilibriumAMSD_nc5_na3_v1.md",
+            ],
+            "Intertemporal models" => [
+                "Intertemporal CES" => "gemb/examples/gemb_intertemporalEquilibriumCES_nct2_nat2_v5.md",
+                "Intertemporal CES marginal utility" => "gemb/examples/gemb_intertemporalEquilibriumCESMarginal_nct2_nat2_v2.md",
+                "Intertemporal CES with claim" => "gemb/examples/gemb_intertemporalEquilibriumCESClaim_nct3_nat3_v3.md",
+                "Endogenous interest rate" => "gemb/examples/gemb_intertemporalEquilibrium_endogenousInterestRate_nct2_nat3_v1.md",
+                "Variable claim" => "gemb/examples/gemb_intertemporalEquilibrium_variableClaim_nct3_nat3_v1.md",
+            ],
+        ],
+    ],
 ]
+# END GENERATED NAVIGATION
 
-guide_pages = Pair{String,String}[
-    "Condition Agents" => "condition_agents.md",
-    "Ad Valorem Claims" => "ad_valorem_claims.md",
-    "Intertemporal Equilibrium" => "intertemporal_equilibrium.md",
-]
-
-push!(pages_list, "Guides" => guide_pages)
-
-if !isempty(api_subpages)
-    push!(pages_list, "API Reference" => api_subpages)
-end
-
-if !isempty(example_pages)
-    push!(pages_list, "Examples" => example_pages)
-end
-
-# ========== Build the documentation ==========
 
 makedocs(
-    modules = [mod for (_, mod) in modules_to_document],
-
-    format = Documenter.HTML(
-        prettyurls = get(ENV, "CI", "false") == "true",
-        edit_link = nothing,
-    ),
-
-    sitename = "GEMB.jl Documentation",
-    authors = "Wu Li",
-
-    # Disable remote source links for local documentation builds.
-    remotes = nothing,
-
-    pages = pages_list,
-
-    # Keep selected documentation warnings non-fatal during development.
-    warnonly = [
-        :missing_docs,
-        :cross_references,
-        :eval_block,
+    pages = DOC_PAGES,
+    sitename = "GeneralEquilibriumModeling.jl",
+    checkdocs = :none,
+    modules = [
+        GeneralEquilibriumModeling,
+        GeneralEquilibriumModeling.GEM,
+        GeneralEquilibriumModeling.GEMB,
     ],
+    remotes = nothing,
+    format = Documenter.HTML(
+        repolink = "https://github.com/LiWuR/GeneralEquilibriumModeling.jl",
+        edit_link = "main",
+        prettyurls = get(ENV, "CI", "false") == "true",
+    ),
 )
 
-# Deploy documentation from GitHub Actions.
-deploydocs(
-    repo = "github.com/LiWuR/GEMB.jl.git",
-    devbranch = "main",
-)
+if get(ENV, "CI", "false") == "true" &&
+   get(ENV, "GITHUB_REPOSITORY", "") ==
+   "LiWuR/GeneralEquilibriumModeling.jl"
+
+    deploydocs(
+        repo = "github.com/LiWuR/GeneralEquilibriumModeling.jl.git",
+        devbranch = "main",
+        push_preview = true,
+    )
+end

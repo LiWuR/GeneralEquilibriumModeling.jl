@@ -1,3 +1,5 @@
+/Manifest*.toml
+
 /Manifest.toml
 /docs/Manifest.toml
 /docs/build/
@@ -5,3 +7,7 @@
 *.jl.cov
 *.jl.*.cov
 *.jl.mem
+
+# Local migration/build artifacts
+_migration/
+/docs/_migration/

@@ -1,128 +1,45 @@
 using Test
-using GEM
-using GEMB
+using GeneralEquilibriumModeling
 
-@testset "GEMB package" begin
-    include("test_condition_agent_v1.jl")
-    include("test_claimSemanticGenerality_v4.jl")
-    include("test_claimInterfaceUserFacingCleanup_v2.jl")
-    include("test_claimInterfaceCoreCleanup_v2.jl")
-    include("test_agentBuilderRouter_userCleanup_v3.jl")
-    include("test_relativeRefFileCleanup_v1.jl")
-    include("test_intertemporalDocsPublicAPI_v3.jl")
-    include("test_relativeAgentRefs_step7c2fix_v1.jl")
-    include("test_agentTemplateEndowmentHelper_step7c2_v1.jl")
-    include("test_addAgents_transaction_step7c1_v1.jl")
-    include("test_agentTemplate_step7c1_v1.jl")
-    include("test_agentTemplateUsesAddAgent_step7c2_v1.jl")
-    include("test_directDatedAddAgent_step7b_v1.jl")
-    include("test_byPeriodEndowmentValidation_step7a_v2.jl")
-    include("test_periodVaryingClaimRate_step7a_v2.jl")
-    include("test_byPeriod_step7a_v2.jl")
+# The three modules must be declared at top level in Julia.
+# They isolate the formerly independent GEM and GEMB package test suites.
 
+module GEMTests
+using Test
+using GeneralEquilibriumModeling
+end
 
+module GEMBTests
+using Test
+using GeneralEquilibriumModeling
+end
 
+module IntegrationTests
+using Test
+using GeneralEquilibriumModeling
+end
 
+@testset "GeneralEquilibriumModeling" begin
 
+    @testset "GEM" begin
+        Base.include(
+            GEMTests,
+            joinpath(@__DIR__, "gem", "runtests.jl"),
+        )
+    end
 
+    @testset "GEMB" begin
+        Base.include(
+            GEMBTests,
+            joinpath(@__DIR__, "gemb", "runtests.jl"),
+        )
+    end
 
-    include("test_agentVariableRef_agentRefStep4_v1.jl")
+    @testset "GEM-GEMB integration" begin
+        Base.include(
+            IntegrationTests,
+            joinpath(@__DIR__, "integration", "runtests.jl"),
+        )
+    end
 
-    include("test_agentRef_relativePeriodStep3_v2.jl")
-
-    include("test_gembModel_agentRefStep2_v1.jl")
-
-    include("test_agentRef_step1_v1.jl")
-
-    # Intertemporal CommoditySpace cleanup STEP 6
-
-    # ------------------------------------------------------------
-    # Package-boundary tests
-    # ------------------------------------------------------------
-
-    @test isdefined(GEMB, :AbstractActivityDemandSpec)
-    @test isdefined(GEMB, :ActivityDemandSpec)
-    @test isdefined(GEMB, :activity_demand)
-
-    @test !isdefined(GEMB, :AbstractDemandModifier)
-    @test !isdefined(GEMB, :AdValoremClaim)
-@test isdefined(GEMB, :_AbstractDemandModifier)
-@test isdefined(GEMB, :_ClaimRateModifier)
-
-    @test isdefined(GEMB, :CESSpec)
-    @test isdefined(GEMB, :DCESSpec)
-    @test isdefined(GEMB, :build_agent)
-
-    # Legacy CES/DCES-specific claim specifications must be gone.
-    @test !isdefined(GEMB, :CESClaimSpec)
-    @test !isdefined(GEMB, :DCESClaimSpec)
-
-    @test isdefined(GEM, :NetSupplyAgent)
-    @test isdefined(GEM, :NetSupplyEquilibriumModel)
-    @test isdefined(GEM, :EquilibriumResult)
-    @test isdefined(GEM, :raw_result)
-
-    # GEMB-specific behavioral specifications and builders
-    # must not belong to GEM.
-    @test !isdefined(GEM, :AbstractActivityDemandSpec)
-    @test !isdefined(GEM, :ActivityDemandSpec)
-    @test !isdefined(GEM, :AdValoremClaim)
-    @test !isdefined(GEM, :CESSpec)
-    @test !isdefined(GEM, :DCESSpec)
-    @test !isdefined(GEM, :build_agent)
-
-    # ------------------------------------------------------------
-    # Core integration/regression tests
-    # ------------------------------------------------------------
-
-    include("test_gemb_gem_baseline_v2.jl")
-    include("test_equilibrium_result_v2.jl")
-
-    # ------------------------------------------------------------
-    # Activity-demand architecture
-    # ------------------------------------------------------------
-
-    include("test_activity_demand_spec_v3.jl")
-    include("test_activityDemandBuilderDeadCodeCleanup_v3.jl")
-    include("test_activityDemandProtocolOwnership_v4.jl")
-    include("test_activity_demand_condition_rules_v3.jl")
-    include("test_power_cet_regression_v3.jl")
-    include("test_ces_v9_activity_demand_integration_v2.jl")
-
-    # ------------------------------------------------------------
-    # Generic ad valorem claim modifier
-    # ------------------------------------------------------------
-
-    include("test_activity_demand_claim_cleanup_v7.jl")
-
-    # ------------------------------------------------------------
-    # Consumer and production-function paths
-    # ------------------------------------------------------------
-
-    include("test_consumer_direct_dispatch_v3.jl")
-    include("test_production_direct_dispatch_v3.jl")
-
-    
-
-    # ------------------------------------------------------------
-    # Independent claim/policy mechanism regression
-    # ------------------------------------------------------------
-
-    include("test_specific_subsidy_claim_negative_price_v2.jl")
-
-    include("test_claimRate_equilibrium_gemb_v1.jl")
-
-    # ------------------------------------------------------------
-    # Intertemporal equilibrium framework
-    # ------------------------------------------------------------
-
-    include("test_intertemporalPublicAPI_v8.jl")
-    include("test_agentTemplateClaim_step7c2_v1.jl")
-include("test_agentTemplateClaimEquilibrium_step7c2_v1.jl")
-
-    # ------------------------------------------------------------
-    # High-level asset-equilibrium interface
-    # ------------------------------------------------------------
-
-    include("test_assetEquilibriumAMSD_v1.jl")
 end
