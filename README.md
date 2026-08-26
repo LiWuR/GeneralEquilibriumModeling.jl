@@ -1,22 +1,25 @@
-# GEM.jl
+# GeneralEquilibriumModeling.jl
 
 [![CI](https://github.com/LiWuR/GeneralEquilibriumModeling.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/LiWuR/GeneralEquilibriumModeling.jl/actions/workflows/CI.yml)
-[![Documentation](https://img.shields.io/badge/docs-dev-blue.svg)](https://LiWuR.github.io/GEM.jl/dev/)
+[![Documentation](https://img.shields.io/badge/docs-dev-blue.svg)](https://LiWuR.github.io/GeneralEquilibriumModeling.jl/dev/)
 
-**GEM** stands for **General Equilibrium Modeling**. It is a Julia package for representing and solving general-equilibrium models, with an emphasis on structural equilibrium systems expressed through net-supply, equilibrium, and complementarity conditions.
+**GeneralEquilibriumModeling.jl** is a Julia package for general-equilibrium modeling. It combines a low-level equilibrium engine with a higher-level model-building layer in one package:
 
-GEM is the low-level equilibrium engine in the GEM/GEMB package family. **GEMB** provides higher-level economic model builders, while GEM provides the underlying equilibrium representation, variables, condition rules, JuMP construction, and solver interface.
+- **`GEM`**: core equilibrium representation, complementarity conditions, JuMP construction, and solver interfaces.
+- **`GEMB`**: higher-level economic specifications, agent builders, model templates, and intertemporal modeling tools built on top of `GEM`.
+
+This organization allows users to work at two levels. Routine economic models can be expressed through the higher-level `GEMB` interfaces, while lower-level `GEM` objects remain available when fine-grained control over net supplies, equilibrium conditions, variable bounds, or solver structure is needed.
 
 ## Installation
 
-Before registration in the Julia General registry, install the development version from GitHub:
+Before registration in the Julia General registry, install the package directly from GitHub:
 
 ```julia
 import Pkg
 Pkg.add(url = "https://github.com/LiWuR/GeneralEquilibriumModeling.jl")
 ```
 
-After GEM is registered in General, installation will be:
+After registration in General, installation will be:
 
 ```julia
 import Pkg
@@ -25,53 +28,135 @@ Pkg.add("GeneralEquilibriumModeling")
 
 ## Quick start
 
-Load GEM with:
+Load the package with:
+
+```julia
+using GeneralEquilibriumModeling
+```
+
+The two modeling layers are then available as submodules:
+
+```julia
+GEM.NetSupplyAgent
+GEM.NetSupplyEquilibriumModel
+GEM.PriceVariableRef
+
+GEMB.CESSpec
+GEMB.ActivityDemandSpec
+GEMB.AgentTemplate
+```
+
+Users who prefer direct submodule imports may write:
 
 ```julia
 using GeneralEquilibriumModeling.GEM
+using GeneralEquilibriumModeling.GEMB
 ```
 
-The package documentation describes the equilibrium model types, variable references, condition rules, auxiliary equations, and solver interface.
+## Package structure
+
+```text
+GeneralEquilibriumModeling
+├── GEM   # core equilibrium modeling and solvers
+└── GEMB  # high-level builders and economic specifications
+```
+
+The source tree, tests, examples, and documentation follow the same separation:
+
+```text
+src/GEM/
+src/GEMB/
+
+test/gem/
+test/gemb/
+test/integration/
+
+examples/gem/
+examples/gemb/
+
+docs/src/gem/
+docs/src/gemb/
+```
+
+## GEM: core equilibrium engine
+
+`GEM` formulates and solves general-equilibrium models as mixed complementarity problems. Economic agents are represented through a unified net-supply framework, and agent optimality conditions, market-clearing conditions, and auxiliary equilibrium equations are assembled into one equilibrium system.
+
+Main capabilities include:
+
+- unified net-supply representations for economic agents;
+- marginal-utility consumer conditions;
+- unit-profit, total-profit, stationary-production, and cost-minimization KKT conditions;
+- multiple activity levels and joint production;
+- cross-agent observable equilibrium variables;
+- endogenous auxiliary variables and equations;
+- flexible price bounds, including free and negative prices;
+- JuMP-based MCP construction;
+- structured equilibrium results and residual diagnostics.
+
+Direct use of `GEM` is useful when a model requires explicit control over agent net supplies, complementarity conditions, variable bounds, or custom equilibrium structures.
+
+## GEMB: high-level model-building layer
+
+`GEMB` provides higher-level behavioral specifications and builders that are translated into ordinary `GEM` equilibrium objects.
+
+Its modeling interfaces include:
+
+- `CESSpec` and `DCESSpec`;
+- generic `ActivityDemandSpec`;
+- marginal-utility and Marshallian-demand consumers;
+- production-function-based agents;
+- producer condition rules such as `UnitProfitConditions` and `TotalProfitConditions`;
+- condition-only agents for endogenous policy and closure variables;
+- ad valorem claims;
+- multiple-output and joint-production models;
+- dated commodities, repeated agent templates, dated claims, and intertemporal equilibrium models;
+- additive mean-standard-deviation asset-exchange equilibrium tools.
+
+`GEMB` is intended for routine economic modeling in which users prefer to specify economic behavior directly rather than manually construct all net-supply and complementarity functions.
+
+## Examples
+
+The repository contains separate example collections for the two modeling levels:
+
+- `examples/gem/` contains low-level equilibrium-modeling examples;
+- `examples/gemb/` contains higher-level specification and builder examples.
+
+The current examples include pure exchange, production, claims and taxes, pollution and negative prices, joint production, asset equilibrium, condition agents, virtual-agent constructions, and intertemporal equilibrium models.
 
 ## PATH solver and licensing
 
-GEM uses [PATHSolver.jl](https://github.com/chkwon/PATHSolver.jl) to solve mixed complementarity problems. PATHSolver.jl is an open-source Julia wrapper, while the underlying PATH solver is closed source and has separate licensing terms.
+GeneralEquilibriumModeling.jl uses [PATHSolver.jl](https://github.com/chkwon/PATHSolver.jl) for mixed complementarity problems. PATHSolver.jl is an open-source Julia wrapper; the underlying PATH solver is separate software with its own licensing terms.
 
-Without a PATH license, PATH can solve problems with at most **300 variables** and **2000 Jacobian nonzeros**. Larger models require a valid PATH license.
-
-GEM does **not** include or distribute a PATH license. A license can be configured by setting the environment variable before loading GEM/PATHSolver:
+GeneralEquilibriumModeling.jl does **not** include or distribute a PATH license. A PATH license can be configured before loading the package, for example:
 
 ```julia
 ENV["PATH_LICENSE_STRING"] = "<license string>"
-using GeneralEquilibriumModeling.GEM
+using GeneralEquilibriumModeling
 ```
 
-or directly through PATHSolver after importing it:
+or directly through PATHSolver:
 
 ```julia
 import PATHSolver
 PATHSolver.c_api_License_SetString("<license string>")
 ```
 
-If PATH reports that a suitable license is unavailable, GEM raises `PATHSolverLicenseError` with a user-facing explanation of the likely license/size issue.
+For PATH licensing details and solver limitations, see the PATHSolver.jl documentation.
 
 ## Documentation
 
 Development documentation is hosted at:
 
-https://LiWuR.github.io/GEM.jl/dev/
+https://LiWuR.github.io/GeneralEquilibriumModeling.jl/dev/
 
-Tagged releases are deployed by Documenter.jl and provide versioned and `stable` documentation.
-
-## Related package
-
-**GEMB.jl (General Equilibrium Model Builder)** is the higher-level modeling layer built on top of GEM. GEM is intended to remain the general equilibrium core; GEMB provides convenient economic specifications and model-building interfaces.
+The manual is organized into separate `GEM` and `GEMB` sections, with API references, modeling guides, and worked examples for each layer.
 
 ## License
 
-GEM.jl is released under the MIT License. See [`LICENSE`](LICENSE).
+GeneralEquilibriumModeling.jl is released under the MIT License. See [`LICENSE`](LICENSE).
 
-The PATHSolver.jl wrapper is also MIT-licensed. The underlying PATH solver is separate software with its own license terms; see the PATHSolver.jl documentation for details.
+The PATHSolver.jl wrapper is also MIT-licensed. The underlying PATH solver is separate software with its own license terms.
 
 ## Development note
 
