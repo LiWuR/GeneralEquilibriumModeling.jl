@@ -11,6 +11,7 @@
 - [Specifications and economic functions](api/GEMB_Specifications.md)
 - [Agent builders and condition agents](api/GEMB_AgentBuilders.md)
 - [High-level model and intertemporal API](api/GEMB_ModelingFramework.md)
+- [Equilibrium statistics](api/GEMB_EquilibriumStatistics.md)
 - [Asset equilibrium](api/GEMB_AssetEquilibrium.md)
 
 ## Loading the submodule

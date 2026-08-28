@@ -9,7 +9,7 @@
 
 using ..GEM:
     NetSupplyAgent,
-    StationaryProductionConditions,
+    ProductionStationarityConditions,
     CostMinimizationKKTConditions
 
 export build_agent
@@ -261,7 +261,7 @@ function build_agent(
     )
 
     rule = if behavior === :stationary
-        StationaryProductionConditions(
+        ProductionStationarityConditions(
             spec.production_function,
             spec.marginal_product_function,
             mapping.input_positions,

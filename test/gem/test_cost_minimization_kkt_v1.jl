@@ -76,7 +76,7 @@ function solve_interior_model(rule_type)
 end
 
 @testset "Cost-min KKT interior consistency" begin
-    stationary = solve_interior_model(StationaryProductionConditions)
+    stationary = solve_interior_model(ProductionStationarityConditions)
     cost_min = solve_interior_model(CostMinimizationKKTConditions)
 
     @test stationary.solved

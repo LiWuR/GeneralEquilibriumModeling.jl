@@ -27,33 +27,29 @@ interpreted as a utility/welfare level.
 abstract type AbstractActivityDemandSpec end
 
 """
-    DCESSpec(beta; es=1.0, alpha=1.0, xi=zeros(length(beta)))
+    ActivityDemandSpec(
+        demand_function;
+        producer_condition_function=nothing,
+    )
 
-Define a displaced CES activity-demand specification.
+Define a generic activity-demand specification.
 
-`beta` contains the CES distribution parameters, `es` is the elasticity of
-substitution, `alpha` is the scale parameter, and `xi` contains the
-displacement parameters.
+`demand_function` computes conditional commodity demand from an activity
+level and prices. It must accept either
 
-When a `DCESSpec` is used to build a producer, GEMB chooses the default
-condition rule as follows:
+    demand_function(activity, prices)
 
-- if every component of `xi` is zero and the producer has no fixed
-  endowments, GEMB uses `UnitProfitConditions`;
-- if any component of `xi` is nonzero, GEMB uses
-  `TotalProfitConditions`;
-- if the producer has fixed endowments, GEMB uses
-  `TotalProfitConditions`.
+or
 
-The user may always override this default with `condition_rule=...`.
+    demand_function(activity, prices, observed_values).
 
-The distinction reflects the default treatment of the producer's full net
-supply. A zero-displacement DCES producer without fixed endowments is
-treated as linear and homogeneous in its activity level. A displaced DCES
-producer, or a producer with fixed endowments, is evaluated at its current
-activity level through `TotalProfitConditions`.
+For a producer, `activity` is interpreted as a production level.
+For a consumer without outputs, `activity` is interpreted as a
+utility/welfare level.
 
-GEMB does not prohibit alternative research specifications.
+`producer_condition_function` may optionally provide an explicit producer
+condition for a producer built from this specification. Consumer condition
+handling is determined by the activity-demand consumer builder.
 """
 struct ActivityDemandSpec{F,G} <: AbstractActivityDemandSpec
     demand_function::F
@@ -70,14 +66,30 @@ function ActivityDemandSpec(
     )
 end
 
+"""
+    AbstractCESFunctionSpec
+
+Abstract supertype for the built-in CES-family activity-demand
+specifications.
+"""
 abstract type AbstractCESFunctionSpec <: AbstractActivityDemandSpec end
 
+"""
+    CESSpec
+
+CES activity-demand specification.
+"""
 struct CESSpec{T<:Real} <: AbstractCESFunctionSpec
     beta::Vector{T}
     es::T
     alpha::T
 end
 
+"""
+    DCESSpec
+
+Displaced CES activity-demand specification.
+"""
 struct DCESSpec{T<:Real} <: AbstractCESFunctionSpec
     beta::Vector{T}
     es::T
@@ -106,9 +118,19 @@ end
 """
     CESSpec(beta; es=1.0, alpha=1.0)
 
-Construct a CES activity-demand specification. Claim behavior is specified
-at agent construction time with `claim_rate`; the claim commodity is mapped separately and resolves to `claim_index` in the low-level builder.
+Construct a CES activity-demand specification.
+
+`beta` contains the CES distribution parameters, `es` is the elasticity of
+substitution, and `alpha` is the scale parameter. Claim behavior is specified
+at agent construction time with `claim_rate`; the claim commodity is mapped
+separately and resolves to `claim_index` in the low-level builder.
+
+When a `CESSpec` is used to build a producer without fixed endowments, GEMB
+uses `UnitRevenueExpenditureBalanceConditions` by default. A producer with
+fixed endowments uses `TotalRevenueExpenditureBalanceConditions` instead.
+The user may always override this default with `condition_rule=...`.
 """
+
 function CESSpec(
     beta::AbstractVector{<:Real};
     es::Real=1.0,
@@ -122,9 +144,35 @@ end
 """
     DCESSpec(beta; es=1.0, alpha=1.0, xi=zeros(length(beta)))
 
-Construct a DCES activity-demand specification. Claim behavior is specified
-at agent construction time with `claim_rate`; the claim commodity is mapped separately and resolves to `claim_index` in the low-level builder.
+Construct a displaced CES activity-demand specification.
+
+`beta` contains the CES distribution parameters, `es` is the elasticity of
+substitution, `alpha` is the scale parameter, and `xi` contains the
+displacement parameters. Claim behavior is specified at agent construction
+time with `claim_rate`; the claim commodity is mapped separately and resolves
+to `claim_index` in the low-level builder.
+
+When a `DCESSpec` is used to build a producer, GEMB chooses the default
+condition rule as follows:
+
+- if every component of `xi` is zero and the producer has no fixed
+  endowments, GEMB uses `UnitRevenueExpenditureBalanceConditions`;
+- if any component of `xi` is nonzero, GEMB uses
+  `TotalRevenueExpenditureBalanceConditions`;
+- if the producer has fixed endowments, GEMB uses
+  `TotalRevenueExpenditureBalanceConditions`.
+
+The user may always override this default with `condition_rule=...`.
+
+The distinction reflects the treatment of the producer's full net supply.
+A zero-displacement DCES producer without fixed endowments is linear and
+homogeneous in its activity level. A displaced DCES producer, or a producer
+with fixed endowments, is evaluated at its current activity level through
+`TotalRevenueExpenditureBalanceConditions`.
+
+GEMB does not prohibit alternative research specifications.
 """
+
 function DCESSpec(
     beta::AbstractVector{<:Real};
     es::Real=1.0,
@@ -156,13 +204,15 @@ When production activity is `z`, the conditional input demand is
 `output_indices` when passed to `build_agent`.
 
 By default, a producer built from `PowerProductionSpec` uses
-`TotalProfitConditions()`. Thus a positive activity level is paired with
-zero total profit (total revenue equals total cost). This default can be
-overridden explicitly with `condition_rule=...`.
+`TotalRevenueExpenditureBalanceConditions()`. Thus a positive activity level
+implies equality between total revenue and total expenditure. For a producer,
+this is equivalent to zero total profit. This default can be overridden
+explicitly with `condition_rule=...`.
 
-The default zero-total-profit condition is a modeling closure. In particular,
-when `theta != 1`, it is not the same condition as marginal-cost pricing or
-the first-order condition of unconstrained profit maximization.
+The default total revenue-expenditure balance condition is a modeling closure.
+In particular, when `theta != 1`, it is not the same condition as
+marginal-cost pricing or the first-order condition of unconstrained profit
+maximization.
 """
 struct PowerProductionSpec{T<:Real} <: AbstractActivityDemandSpec
     alpha::T

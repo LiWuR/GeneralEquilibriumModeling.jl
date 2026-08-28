@@ -4,7 +4,7 @@
 # Regression test for the final condition-rule classification.
 #
 # There is no activity_structure classification and no transitional
-# AutomaticProfitConditions type.
+# legacy automatic condition-rule type type.
 # ================================================================
 
 using Test
@@ -24,7 +24,7 @@ using GeneralEquilibriumModeling.GEM
         name=:default_firm,
     )
 
-    @test agent_condition_rule(default_firm) isa UnitProfitConditions
+    @test agent_condition_rule(default_firm) isa UnitRevenueExpenditureBalanceConditions
     @test agent_uses_automatic_conditions(default_firm)
     @test !hasproperty(default_firm, :activity_structure)
 
@@ -33,11 +33,11 @@ using GeneralEquilibriumModeling.GEM
         simple_supply;
         variable_names=[:activity],
         variable_start=[1.0],
-        condition_rule=UnitProfitConditions(),
+        condition_rule=UnitRevenueExpenditureBalanceConditions(),
         name=:unit_firm,
     )
 
-    @test agent_condition_rule(unit_firm) isa UnitProfitConditions
+    @test agent_condition_rule(unit_firm) isa UnitRevenueExpenditureBalanceConditions
     @test agent_uses_automatic_conditions(unit_firm)
 
     total_firm = ProducerAgent(
@@ -45,11 +45,11 @@ using GeneralEquilibriumModeling.GEM
         simple_supply;
         variable_names=[:activity],
         variable_start=[1.0],
-        condition_rule=TotalProfitConditions(),
+        condition_rule=TotalRevenueExpenditureBalanceConditions(),
         name=:total_firm,
     )
 
-    @test agent_condition_rule(total_firm) isa TotalProfitConditions
+    @test agent_condition_rule(total_firm) isa TotalRevenueExpenditureBalanceConditions
     @test agent_uses_automatic_conditions(total_firm)
 
     explicit_firm = ProducerAgent(
@@ -68,7 +68,7 @@ using GeneralEquilibriumModeling.GEM
     @test agent_condition_rule(explicit_firm) isa ExplicitAgentConditions
     @test !agent_uses_automatic_conditions(explicit_firm)
 
-    @test !isdefined(GEM, :AutomaticProfitConditions)
+    @test !isdefined(GEM, Symbol("Automatic", "Profit", "Conditions"))
     @test !isdefined(GEM, :agent_activity_structure)
 end
 

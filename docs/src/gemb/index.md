@@ -2,21 +2,20 @@
 CurrentModule = GEMB
 ```
 
-# GEMB.jl
+# GEMB
 
-GEMB is a Julia package for building general equilibrium models through
-high-level behavioral specifications. It provides convenient interfaces for
-describing consumers, producers, demand systems, production technologies, and
-ad valorem claims, and automatically translates these specifications into the
-net-supply agents and complementarity conditions used by `GEM`.
+GEMB is the high-level model-building submodule of
+`GeneralEquilibriumModeling.jl`. It provides convenient behavioral
+specifications for consumers, producers, demand systems, production
+technologies, and ad valorem claims, and translates these specifications into
+the net-supply agents and complementarity conditions used by `GEM`.
 
-GEMB is the high-level model-building package in the GEM ecosystem. It is
-designed for routine economic modeling where users prefer to specify economic
-behavior directly rather than manually construct net-supply functions and
-complementarity conditions. GEMB uses `GEM` as its underlying engine, 
-so models constructed with GEMB are ultimately assembled as GEM
-equilibrium models and solved through the same JuMP/PATH complementarity
-framework.
+GEMB is designed for routine economic modeling in which users prefer to specify
+economic behavior directly rather than manually construct net-supply functions
+and complementarity conditions. It uses the `GEM` submodule as its underlying
+equilibrium engine, so models constructed with GEMB are ultimately assembled
+as GEM equilibrium models and solved through the same JuMP/PATH
+complementarity framework.
 
 GEMB supports CES and displaced-CES demand systems, activity-demand
 specifications, marginal-utility consumers, Marshallian-demand consumers, and
@@ -37,7 +36,7 @@ attached to agents, including ad valorem claims that represent proportional righ
 - High-level pure asset-exchange equilibrium solver for additive
   mean-standard-deviation (AMSD) preferences
 - Production-function specifications with automatic equilibrium conditions
-- Automatic producer condition rules with user-overridable `UnitProfitConditions`, `TotalProfitConditions`, and explicit conditions
+- Automatic producer condition rules with user-overridable `UnitRevenueExpenditureBalanceConditions`, `TotalRevenueExpenditureBalanceConditions`, and explicit conditions
 - Utility-activity consumers with automatic expenditure-income conditions
 - General ad valorem claims for proportional rights to economic value bases
 - Intertemporal equilibrium specifications for dated commodities, generic intertemporal agents, optional temporal repetition, and dated claims
@@ -45,6 +44,7 @@ attached to agents, including ad valorem claims that represent proportional righ
 - Direct access to GEM's equilibrium models, price bounds, auxiliary variables,
   and MCP solver when additional control is required
 - Structured equilibrium results and diagnostics inherited from GEM
+- Post-solve [equilibrium statistics](equilibrium_statistics.md) for agent levels, net supplies, and value statistics
 
 ## Basic workflow
 
@@ -91,12 +91,12 @@ The default producer rule is selected in the following order:
 
 1. An `ActivityDemandSpec` with `producer_condition_function` uses
    `ExplicitAgentConditions`.
-2. A producer with fixed endowments uses `TotalProfitConditions`.
+2. A producer with fixed endowments uses `TotalRevenueExpenditureBalanceConditions`.
 3. A `DCESSpec` with any nonzero displacement parameter `xi` uses
-   `TotalProfitConditions`.
-4. Otherwise, GEMB uses `UnitProfitConditions`.
+   `TotalRevenueExpenditureBalanceConditions`.
+4. Otherwise, GEMB uses `UnitRevenueExpenditureBalanceConditions`.
 
-For activity `k`, `UnitProfitConditions` evaluates net supply at one unit of
+For activity `k`, `UnitRevenueExpenditureBalanceConditions` evaluates net supply at one unit of
 that activity, with the other activity variables set to zero:
 
 ```math
@@ -105,7 +105,7 @@ F_k(\bm p)
 -\bm p^\top \bm s(\bm e_k,\bm p)
 ```
 
-`TotalProfitConditions` instead evaluates the current level of activity `k`.
+`TotalRevenueExpenditureBalanceConditions` instead evaluates the current level of activity `k`.
 Let ``\bm z^{(k)}`` denote the activity vector that keeps ``z_k`` and sets the
 other activity variables to zero. Then
 
@@ -123,7 +123,7 @@ F(z,\bm p)
 -\bm p^\top \bm s(z,\bm p)
 ```
 
-The automatic multi-activity `TotalProfitConditions` construction is most
+The automatic multi-activity `TotalRevenueExpenditureBalanceConditions` construction is most
 natural for a separable composite producer whose activities can be evaluated
 independently. GEM and GEMB do not test separability. If activities interact,
 or if common fixed endowments or other shared net-supply components require a
@@ -137,7 +137,7 @@ firm = build_agent(
     CESSpec([0.5, 0.5]);
     output_indices=[1],
     demand_indices=[2, 3],
-    condition_rule=TotalProfitConditions(),
+    condition_rule=TotalRevenueExpenditureBalanceConditions(),
 )
 ```
 
@@ -256,6 +256,16 @@ mixed-complementarity interpretation.
 See the [Condition agents guide](condition_agents.md) for the complete
 interface and examples, including an endogenous tax-rate setter.
 
+## Custom net-supply agents
+
+Standard economic behavior should normally be modeled with [`add_agent!`](@ref)
+and a GEMB behavioral specification. For agents whose complete net-supply
+mapping and condition rule must be supplied directly, use
+[`add_net_supply_agent!`](@ref).
+
+See [Custom net-supply agents](custom_net_supply_agents.md) for the recommended
+workflow and the role of the advanced builder API.
+
 ## Key API entry points
 Detailed documentation for GEMB's types and functions is provided in the API
 reference pages. The following interfaces are useful starting points:
@@ -273,3 +283,4 @@ reference pages. The following interfaces are useful starting points:
 - [`CESMarginalUtilitySpec`](@ref)
 - [`MeanStandardDeviationMarginalUtilitySpec`](@ref)
 - [`solve_asset_equilibrium_amsd`](@ref)
+

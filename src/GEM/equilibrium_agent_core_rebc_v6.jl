@@ -18,8 +18,8 @@ module EquilibriumAgentCoreV1
 export AbstractNetSupplyAgent,
        AbstractAgentConditionRule,
        AbstractEquilibriumVariableRef,
-       UnitProfitConditions,
-       TotalProfitConditions,
+       UnitRevenueExpenditureBalanceConditions,
+       TotalRevenueExpenditureBalanceConditions,
        ExplicitAgentConditions,
        AgentVariableRef,
        agent_name,
@@ -71,7 +71,7 @@ Base.hash(ref::AgentVariableRef, h::UInt) =
     hash(ref.variable_name, hash(ref.agent_name, h))
 
 """
-    UnitProfitConditions
+    UnitRevenueExpenditureBalanceConditions
 
 Construct one zero-profit condition per endogenous agent variable from
 the value of net supply at one unit of that variable, with all other
@@ -84,10 +84,10 @@ For variable `k`, the complementarity mapping is
 where `e_k` is the `k`th unit vector. This rule is appropriate when
 net supply is linear and homogeneous in the activity variables.
 """
-struct UnitProfitConditions <: AbstractAgentConditionRule end
+struct UnitRevenueExpenditureBalanceConditions <: AbstractAgentConditionRule end
 
 """
-    TotalProfitConditions
+    TotalRevenueExpenditureBalanceConditions
 
 Construct one total-profit condition per endogenous activity variable.
 
@@ -107,7 +107,7 @@ If activities interact, or if common fixed endowments or other
 non-activity-specific net-supply components require a different allocation
 across activity conditions, provide an explicit `condition_rule`.
 """
-struct TotalProfitConditions <: AbstractAgentConditionRule end
+struct TotalRevenueExpenditureBalanceConditions <: AbstractAgentConditionRule end
 
 """
     ExplicitAgentConditions(condition_function)
@@ -215,8 +215,8 @@ condition rule constructed automatically from net-supply value.
 """
 agent_uses_automatic_conditions(agent::AbstractNetSupplyAgent) =
     (
-        agent.condition_rule isa UnitProfitConditions ||
-        agent.condition_rule isa TotalProfitConditions
+        agent.condition_rule isa UnitRevenueExpenditureBalanceConditions ||
+        agent.condition_rule isa TotalRevenueExpenditureBalanceConditions
     ) &&
     agent_variable_count(agent) > 0
 

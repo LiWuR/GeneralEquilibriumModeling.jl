@@ -77,7 +77,7 @@ landPriceEq = AuxiliaryEquation(
 # represented by a Cobb-Douglas CES specification.
 #
 # The producer has constant returns to scale, so the default
-# UnitProfitConditions() gives zero unit profit.
+# UnitRevenueExpenditureBalanceConditions() gives zero unit profit.
 #
 
 producer = build_agent(

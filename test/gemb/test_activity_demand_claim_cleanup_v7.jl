@@ -110,7 +110,7 @@ using GeneralEquilibriumModeling.GEMB
         ces_prices,
     )
 
-    @test agent_condition_rule(ces_firm) isa UnitProfitConditions
+    @test agent_condition_rule(ces_firm) isa UnitRevenueExpenditureBalanceConditions
 
     ces_unit_supply = agent_net_supply(
         ces_firm,
@@ -149,7 +149,7 @@ using GeneralEquilibriumModeling.GEMB
         ces_variables,
         ces_prices,
     ) ≈ ces_supply
-    @test agent_condition_rule(ces_firm_repeat) isa UnitProfitConditions
+    @test agent_condition_rule(ces_firm_repeat) isa UnitRevenueExpenditureBalanceConditions
 
 
     # ------------------------------------------------------------
@@ -182,7 +182,7 @@ using GeneralEquilibriumModeling.GEMB
         dces_prices,
     )
 
-    @test agent_condition_rule(dces_firm) isa UnitProfitConditions
+    @test agent_condition_rule(dces_firm) isa UnitRevenueExpenditureBalanceConditions
 
     dces_unit_supply = agent_net_supply(
         dces_firm,
@@ -231,17 +231,12 @@ using GeneralEquilibriumModeling.GEMB
         consumer_prices,
     )
 
-    consumer_conditions = agent_condition_rule(
-        consumer,
-    )(
-        consumer_variables,
-        consumer_prices,
-        consumer_supply,
-    )
+    @test agent_condition_rule(consumer) isa TotalRevenueExpenditureBalanceConditions
+    consumer_balance = -sum(consumer_prices .* consumer_supply)
 
-    @test agent_condition_rule(consumer) isa ExplicitAgentConditions
+    @test agent_condition_rule(consumer) isa TotalRevenueExpenditureBalanceConditions
     @test consumer_supply ≈ [2.0, -1.0]
-    @test consumer_conditions ≈ [0.0]
+    @test consumer_balance ≈ 0.0
     @test agent_variable_count(consumer) == 1
 
 
@@ -264,7 +259,7 @@ using GeneralEquilibriumModeling.GEMB
         [1.0, 1.0, 0.0],
     )
 
-    @test agent_condition_rule(zero_claim_firm) isa UnitProfitConditions
+    @test agent_condition_rule(zero_claim_firm) isa UnitRevenueExpenditureBalanceConditions
     @test zero_claim_supply ≈ [10.0, -10.0, 0.0]
 end
 
@@ -292,7 +287,7 @@ end
         name=:firm,
     )
 
-    @test agent_condition_rule(firm) isa UnitProfitConditions
+    @test agent_condition_rule(firm) isa UnitRevenueExpenditureBalanceConditions
 
     worker = NetSupplyConsumerAgent(
         [1, 2],

@@ -41,7 +41,7 @@ using GeneralEquilibriumModeling.GEMB
     )
 
     @test generic_producer isa GEM.NetSupplyAgent
-    @test agent_condition_rule(generic_producer) isa UnitProfitConditions
+    @test agent_condition_rule(generic_producer) isa UnitRevenueExpenditureBalanceConditions
 
     # ------------------------------------------------------------
     # 3. Generic compensated-demand consumer construction
@@ -56,7 +56,7 @@ using GeneralEquilibriumModeling.GEMB
     )
 
     @test generic_consumer isa GEM.NetSupplyAgent
-    @test agent_condition_rule(generic_consumer) isa ExplicitAgentConditions
+    @test agent_condition_rule(generic_consumer) isa TotalRevenueExpenditureBalanceConditions
 
     # ------------------------------------------------------------
     # 4. CES uses the same ActivityDemandSpec protocol
@@ -81,7 +81,7 @@ using GeneralEquilibriumModeling.GEMB
         name=:ces_producer,
     )
     @test ces_producer isa GEM.NetSupplyAgent
-    @test agent_condition_rule(ces_producer) isa UnitProfitConditions
+    @test agent_condition_rule(ces_producer) isa UnitRevenueExpenditureBalanceConditions
 
     ces_consumer = build_agent(
         ces_spec;
@@ -92,7 +92,7 @@ using GeneralEquilibriumModeling.GEMB
         name=:ces_consumer,
     )
     @test ces_consumer isa GEM.NetSupplyAgent
-    @test agent_condition_rule(ces_consumer) isa ExplicitAgentConditions
+    @test agent_condition_rule(ces_consumer) isa TotalRevenueExpenditureBalanceConditions
 
     # ------------------------------------------------------------
     # 5. DCES uses the same ActivityDemandSpec protocol
@@ -118,7 +118,7 @@ using GeneralEquilibriumModeling.GEMB
         name=:dces_producer,
     )
     @test dces_producer isa GEM.NetSupplyAgent
-    @test agent_condition_rule(dces_producer) isa TotalProfitConditions
+    @test agent_condition_rule(dces_producer) isa TotalRevenueExpenditureBalanceConditions
 
     dces_consumer = build_agent(
         dces_spec;
@@ -129,7 +129,7 @@ using GeneralEquilibriumModeling.GEMB
         name=:dces_consumer,
     )
     @test dces_consumer isa GEM.NetSupplyAgent
-    @test agent_condition_rule(dces_consumer) isa ExplicitAgentConditions
+    @test agent_condition_rule(dces_consumer) isa TotalRevenueExpenditureBalanceConditions
 
     # ------------------------------------------------------------
     # 6. Nonlinear generic activity demand remains user-selectable
@@ -137,7 +137,7 @@ using GeneralEquilibriumModeling.GEMB
     #
     # GEMB does not reject a nonlinear ActivityDemandSpec. With no explicit
     # producer condition or rule override, the producer defaults to
-    # UnitProfitConditions. The user remains responsible for deciding whether
+    # UnitRevenueExpenditureBalanceConditions. The user remains responsible for deciding whether
     # that rule is economically appropriate.
     general_spec = ActivityDemandSpec(
         (activity, prices) -> [activity^2, activity^2],
@@ -153,19 +153,19 @@ using GeneralEquilibriumModeling.GEMB
     )
 
     @test general_producer isa GEM.NetSupplyAgent
-    @test agent_condition_rule(general_producer) isa UnitProfitConditions
+    @test agent_condition_rule(general_producer) isa UnitRevenueExpenditureBalanceConditions
 
     general_total_producer = build_agent(
         general_spec;
         output_indices=[1],
         output_coefficients=[1.0],
         demand_indices=[2, 3],
-        condition_rule=TotalProfitConditions(),
+        condition_rule=TotalRevenueExpenditureBalanceConditions(),
         activity_start=1.0,
         name=:general_total_producer,
     )
 
-    @test agent_condition_rule(general_total_producer) isa TotalProfitConditions
+    @test agent_condition_rule(general_total_producer) isa TotalRevenueExpenditureBalanceConditions
 
     # The same specification remains valid for a compensated-demand consumer.
     general_consumer = build_agent(
@@ -178,5 +178,5 @@ using GeneralEquilibriumModeling.GEMB
     )
 
     @test general_consumer isa GEM.NetSupplyAgent
-    @test agent_condition_rule(general_consumer) isa ExplicitAgentConditions
+    @test agent_condition_rule(general_consumer) isa TotalRevenueExpenditureBalanceConditions
 end

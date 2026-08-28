@@ -1,8 +1,13 @@
+# gemb_conditionRule_unitProfit_nc2_na2_v2
+
+Source file: `examples/gemb_conditionRule_UREBC_nc2_na2_v2.jl`
+
+````julia
 # ================================================================
-# gemb_conditionRule_unitProfit_nc2_na2_v2.jl
+# gemb_conditionRule_UREBC_nc2_na2_v2.jl
 #
-# Standard GEMB example for UnitProfitConditions, including a
-# research override to TotalProfitConditions.
+# Standard GEMB example for UnitRevenueExpenditureBalanceConditions, including a
+# research override to TotalRevenueExpenditureBalanceConditions.
 #
 # Commodities:
 #   1. product
@@ -21,11 +26,11 @@
 #
 #     s(z,p) = z * [1, -1].
 #
-# GEMB therefore selects UnitProfitConditions by default.
+# GEMB therefore selects UnitRevenueExpenditureBalanceConditions by default.
 #
 # This example then rebuilds the same producer with
 #
-#     condition_rule=TotalProfitConditions()
+#     condition_rule=TotalRevenueExpenditureBalanceConditions()
 #
 # to show that researchers may override the GEMB default.
 #
@@ -63,7 +68,7 @@ household = build_agent(
 
 
 # ================================================================
-# Part A. GEMB default: UnitProfitConditions
+# Part A. GEMB default: UnitRevenueExpenditureBalanceConditions
 # ================================================================
 
 # ----------------------------------------------------------------
@@ -75,7 +80,7 @@ household = build_agent(
 #
 # The producer has no fixed endowment, so GEMB defaults to
 #
-#     UnitProfitConditions().
+#     UnitRevenueExpenditureBalanceConditions().
 #
 # For one activity variable, the unit-profit residual is
 #
@@ -97,11 +102,11 @@ firm_unit = build_agent(
     name=:firm_unit,
 )
 
-@assert agent_condition_rule(firm_unit) isa UnitProfitConditions
+@assert agent_condition_rule(firm_unit) isa UnitRevenueExpenditureBalanceConditions
 
 
 # ----------------------------------------------------------------
-# 3. Solve the UnitProfitConditions model
+# 3. Solve the UnitRevenueExpenditureBalanceConditions model
 #
 # Product is the numeraire:
 #
@@ -123,7 +128,7 @@ result_unit = solve_equilibrium_model_mcp_jump(
 unit_activity = result_unit.agent_variable_values[1][1]
 unit_utility = result_unit.agent_variable_values[2][1]
 
-println("========== Default UnitProfitConditions ==========")
+println("========== Default UnitRevenueExpenditureBalanceConditions ==========")
 println("Solved:               ", result_unit.solved)
 println("Prices:               ", result_unit.prices)
 println("Firm activity:        ", unit_activity)
@@ -156,16 +161,16 @@ println("==================================================")
 
 
 # ================================================================
-# Part B. Research override: TotalProfitConditions
+# Part B. Research override: TotalRevenueExpenditureBalanceConditions
 # ================================================================
 
 # ----------------------------------------------------------------
 # 4. Rebuild the same producer with an explicit rule override
 #
-# Although GEMB would normally select UnitProfitConditions for this
+# Although GEMB would normally select UnitRevenueExpenditureBalanceConditions for this
 # CES producer, the user may override the default:
 #
-#     condition_rule=TotalProfitConditions()
+#     condition_rule=TotalRevenueExpenditureBalanceConditions()
 #
 # For one activity variable, the total-profit residual is
 #
@@ -184,15 +189,15 @@ firm_total = build_agent(
     output_indices=[1],
     demand_indices=[2],
     activity_start=5.0,
-    condition_rule=TotalProfitConditions(),
+    condition_rule=TotalRevenueExpenditureBalanceConditions(),
     name=:firm_total,
 )
 
-@assert agent_condition_rule(firm_total) isa TotalProfitConditions
+@assert agent_condition_rule(firm_total) isa TotalRevenueExpenditureBalanceConditions
 
 
 # ----------------------------------------------------------------
-# 5. Solve the TotalProfitConditions model
+# 5. Solve the TotalRevenueExpenditureBalanceConditions model
 # ----------------------------------------------------------------
 
 model_total = EquilibriumModel(
@@ -211,7 +216,7 @@ total_activity = result_total.agent_variable_values[1][1]
 total_utility = result_total.agent_variable_values[2][1]
 
 println()
-println("========== Override TotalProfitConditions ==========")
+println("========== Override TotalRevenueExpenditureBalanceConditions ==========")
 println("Solved:               ", result_total.solved)
 println("Prices:               ", result_total.prices)
 println("Firm activity:        ", total_activity)
@@ -259,15 +264,15 @@ println("====================================================")
 #
 #     profit = 1.0 - 0.8 = 0.2,
 #
-# so the UnitProfitConditions residual is
+# so the UnitRevenueExpenditureBalanceConditions residual is
 #
 #     F_U = -0.2.
 #
 # This violates the required nonnegativity of the residual at z = 0,
-# so UnitProfitConditions does not permit shutdown when a profitable
+# so UnitRevenueExpenditureBalanceConditions does not permit shutdown when a profitable
 # unit activity is available.
 #
-# Under TotalProfitConditions, however,
+# Under TotalRevenueExpenditureBalanceConditions, however,
 #
 #     s(0,p) = [0, 0],
 #
@@ -278,7 +283,7 @@ println("====================================================")
 # regardless of the positive unit profit. Thus z = 0 does not by itself
 # impose the unit-profit inequality.
 #
-# This corner difference is why UnitProfitConditions is the natural
+# This corner difference is why UnitRevenueExpenditureBalanceConditions is the natural
 # default for a linear and homogeneous constant-returns activity, while
 # GEMB still allows researchers to override that default.
 # ----------------------------------------------------------------
@@ -347,3 +352,5 @@ println("  Unit prices:    ", result_unit.prices)
 println("  Total prices:   ", result_total.prices)
 println("  Unit activity:  ", unit_activity)
 println("  Total activity: ", total_activity)
+
+````

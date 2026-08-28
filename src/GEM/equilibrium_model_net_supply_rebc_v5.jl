@@ -27,8 +27,8 @@ module EquilibriumNetSupplyModelV11
 using ..EquilibriumAgentCoreV1:
     AbstractNetSupplyAgent,
     AbstractAgentConditionRule,
-    UnitProfitConditions,
-    TotalProfitConditions,
+    UnitRevenueExpenditureBalanceConditions,
+    TotalRevenueExpenditureBalanceConditions,
     ExplicitAgentConditions,
     AgentVariableRef,
     agent_name,
@@ -58,8 +58,8 @@ using ..AuxiliaryEquationsV4:
 
 export AbstractNetSupplyAgent,
        AbstractAgentConditionRule,
-       UnitProfitConditions,
-       TotalProfitConditions,
+       UnitRevenueExpenditureBalanceConditions,
+       TotalRevenueExpenditureBalanceConditions,
        ExplicitAgentConditions,
        AgentVariableRef,
        PriceVariableRef,
@@ -140,7 +140,7 @@ function _default_start(lower, upper)
 end
 
 function _resolve_condition_rule(condition_rule)
-    condition_rule === nothing && return UnitProfitConditions()
+    condition_rule === nothing && return UnitRevenueExpenditureBalanceConditions()
     condition_rule isa AbstractAgentConditionRule ||
         throw(ArgumentError(
             "condition_rule must be an AbstractAgentConditionRule.",

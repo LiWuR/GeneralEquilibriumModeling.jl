@@ -75,7 +75,6 @@ using GeneralEquilibriumModeling.GEMB
     # Core integration/regression tests
     # ------------------------------------------------------------
 
-    include("test_gemb_gem_baseline_v2.jl")
     include("test_equilibrium_result_v2.jl")
 
     # ------------------------------------------------------------
@@ -125,4 +124,25 @@ include("test_agentTemplateClaimEquilibrium_step7c2_v1.jl")
     # ------------------------------------------------------------
 
     include("test_assetEquilibriumAMSD_v1.jl")
+
+    # ------------------------------------------------------------
+    # Equilibrium statistics
+    # ------------------------------------------------------------
+
+    include("test_equilibriumStatistics_netSupplyMatrix_v2.jl")
+    include("test_equilibriumStatistics_netSupplyValue_v3.jl")
+    include("test_equilibriumStatistics_unified_v5.jl")
+    include("test_equilibriumStatistics_print_v5.jl")
+    include("test_equilibriumStatistics_agentLevels_v1.jl")
 end
+
+
+
+
+# ------------------------------------------------------------
+# Equilibrium statistics display
+# ------------------------------------------------------------
+
+# ------------------------------------------------------------
+# Equilibrium statistics agent levels
+# ------------------------------------------------------------

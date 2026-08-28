@@ -1,3 +1,8 @@
+import Pkg
+
+Pkg.activate(@__DIR__)
+Pkg.instantiate()
+
 using Documenter
 using GeneralEquilibriumModeling
 using GeneralEquilibriumModeling.GEM
@@ -47,7 +52,9 @@ DOC_PAGES = [
         "Guides" => [
             "Ad valorem claims" => "gemb/ad_valorem_claims.md",
             "Condition agents" => "gemb/condition_agents.md",
+            "Custom net-supply agents" => "gemb/custom_net_supply_agents.md",
             "Intertemporal equilibrium" => "gemb/intertemporal_equilibrium.md",
+            "Equilibrium statistics" => "gemb/equilibrium_statistics.md",
         ],
         "API Reference" => [
             "API index" => "gemb/api.md",
@@ -55,6 +62,7 @@ DOC_PAGES = [
             "Specifications and economic functions" => "gemb/api/GEMB_Specifications.md",
             "Agent builders and condition agents" => "gemb/api/GEMB_AgentBuilders.md",
             "High-level model and intertemporal API" => "gemb/api/GEMB_ModelingFramework.md",
+            "Equilibrium statistics" => "gemb/api/GEMB_EquilibriumStatistics.md",
             "Asset equilibrium" => "gemb/api/GEMB_AssetEquilibrium.md",
         ],
         "Examples" => [
@@ -64,7 +72,8 @@ DOC_PAGES = [
                 "CES–CET" => "gemb/examples/gemb_CES_CET_nc4_na2_v2.md",
                 "Activity-demand Cobb–Douglas" => "gemb/examples/gemb_activityDemand_CD_nc2_na2_v2.md",
                 "Explicit condition rule" => "gemb/examples/gemb_conditionRule_explicit_nc2_na2_v1.md",
-                "Unit-profit condition rule" => "gemb/examples/gemb_conditionRule_unitProfit_nc2_na2_v2.md",
+                "Unit-profit condition rule" => "gemb/examples/gemb_conditionRule_UREBC_nc2_na2_v2.md",
+                "Custom net-supply agent" => "gemb/examples/custom_net_supply_agent.md",
             ],
             "Claims and taxes" => [
                 "Specific subsidy via claim" => "gemb/examples/gemb_CD_specificSubsidyClaim_nc3_na2_v1.md",

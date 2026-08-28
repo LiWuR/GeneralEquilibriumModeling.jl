@@ -104,12 +104,12 @@ firm_net_supply = ProductionNetSupply(
 # Either condition rule can be used for this producer.
 #
 # `CostMinimizationKKTConditions` represents cost-minimization KKT
-# conditions, while `StationaryProductionConditions` represents the
+# conditions, while `ProductionStationarityConditions` represents the
 # stationary marginal-pricing conditions p_i = lambda * MP_i.
 # Both give the same equilibrium in this Cobb-Douglas example.
 
 firm_conditions = CostMinimizationKKTConditions(
-# firm_conditions = StationaryProductionConditions(
+# firm_conditions = ProductionStationarityConditions(
     firm_production,
     firm_marginal_product,
     firm_net_supply.input_positions,

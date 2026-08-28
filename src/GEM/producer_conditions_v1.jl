@@ -5,7 +5,7 @@
 #
 # This module consolidates the two production-function condition rules:
 #
-#   1. StationaryProductionConditions
+#   1. ProductionStationarityConditions
 #   2. CostMinimizationKKTConditions
 #
 # Both rules use the canonical local-variable order
@@ -45,7 +45,7 @@ module ProducerConditionsV1
 using ..EquilibriumAgentCoreV1: AbstractAgentConditionRule
 
 export AbstractProductionConditions,
-       StationaryProductionConditions,
+       ProductionStationarityConditions,
        CostMinimizationKKTConditions,
        evaluate_production,
        evaluate_marginal_product,
@@ -95,17 +95,17 @@ end
 
 
 # ----------------------------------------------------------------
-# 2. Stationary production conditions
+# 2. Production stationarity conditions
 # ----------------------------------------------------------------
 
 """
-    StationaryProductionConditions(
+    ProductionStationarityConditions(
         production_function,
         marginal_product_function,
         input_price_positions,
     )
 
-Create a stationary production condition rule.
+Create a production stationarity condition rule.
 
 The local-variable order is
 
@@ -122,12 +122,12 @@ and the condition vector is
 The supplied `marginal_product_function` may be a scaled marginal-product
 function rather than the exact gradient of `production_function`. 
 
-StationaryProductionConditions imposes only the stationary first-order conditions, 
+ProductionStationarityConditions imposes only the stationary first-order conditions, 
 or marginal-pricing conditions. It is particularly useful when the production set is nonconvex, 
 so cost-minimization conditions may be too restrictive. 
 The current formulation assumes an interior solution, so the marginal-pricing conditions hold as equalities.
 """
-struct StationaryProductionConditions{PF,MPF} <: AbstractProductionConditions
+struct ProductionStationarityConditions{PF,MPF} <: AbstractProductionConditions
     production_function::PF
     marginal_product_function::MPF
     activity_variable_position::Int
@@ -136,7 +136,7 @@ struct StationaryProductionConditions{PF,MPF} <: AbstractProductionConditions
     multiplier_variable_position::Int
 end
 
-function StationaryProductionConditions(
+function ProductionStationarityConditions(
     production_function,
     marginal_product_function,
     input_price_positions::AbstractVector{<:Integer},
@@ -146,7 +146,7 @@ function StationaryProductionConditions(
     variable_positions =
         _canonical_variable_positions(length(price_positions))
 
-    return StationaryProductionConditions{
+    return ProductionStationarityConditions{
         typeof(production_function),
         typeof(marginal_product_function),
     }(

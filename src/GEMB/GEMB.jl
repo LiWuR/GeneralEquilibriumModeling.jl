@@ -101,7 +101,7 @@ export CES,
 # ================================================================
 # High-level mutable equilibrium model
 # ================================================================
-include("gemb_model_v13.jl")
+include("gemb_model_v16.jl")
 include("by_period_v1.jl")
 include("relative_period_v1.jl")
 include("relative_agent_refs_v1.jl")
@@ -114,6 +114,7 @@ include("agent_template_expansion_v2.jl")
 # ================================================================
 export GEMBModel,
        add_agent!,
+       add_net_supply_agent!,
        build_model,
        solve
 # ================================================================
@@ -125,5 +126,19 @@ export CommoditySpec, CommoditySpace
 # General structured-agent identity API
 # ================================================================
 export AgentRef
+
+# ================================================================
+# Equilibrium statistics
+# ================================================================
+include("equilibrium_statistics_v5.jl")
+export net_supply_matrix
+
+export net_supply_value_matrix
+
+export agent_net_supply_values
+
+export equilibrium_statistics
+
+export print_equilibrium_statistics
 
 end # module GEMB

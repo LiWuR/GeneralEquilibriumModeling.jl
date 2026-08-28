@@ -10,8 +10,8 @@
 
 using ..GEM:
     ExplicitAgentConditions,
-    UnitProfitConditions,
-    TotalProfitConditions,
+    UnitRevenueExpenditureBalanceConditions,
+    TotalRevenueExpenditureBalanceConditions,
     NetSupplyAgent
 
 export build_agent
@@ -104,14 +104,6 @@ function _producer_activity_demand(
     return [zero(activity) for _ in spec.beta]
 end
 
-function _consumer_activity_condition_function()
-    return function (local_variables, local_prices, net_supply)
-        # With no outputs, net supply is endowment minus compensated demand.
-        # Therefore -p' * net_supply is expenditure minus endowment income.
-        return [-sum(local_prices .* net_supply)]
-    end
-end
-
 # ----------------------------------------------------------------
 # Activity-supply helpers
 # ----------------------------------------------------------------
@@ -197,27 +189,27 @@ order:
 1. `ActivityDemandSpec` with `producer_condition_function`
    -> `ExplicitAgentConditions`;
 2. `PowerProductionSpec`
-   -> `TotalProfitConditions`;
+   -> `TotalRevenueExpenditureBalanceConditions`;
 3. producer with fixed endowments
-   -> `TotalProfitConditions`;
+   -> `TotalRevenueExpenditureBalanceConditions`;
 4. `DCESSpec` with any nonzero `xi`
-   -> `TotalProfitConditions`;
+   -> `TotalRevenueExpenditureBalanceConditions`;
 5. otherwise
-   -> `UnitProfitConditions`.
+   -> `UnitRevenueExpenditureBalanceConditions`.
 
-`UnitProfitConditions` constructs the condition for activity `k` from
+`UnitRevenueExpenditureBalanceConditions` constructs the condition for activity `k` from
 the value of net supply at the unit vector `e_k`:
 
     F_k = -p' * s(e_k, p)
 
-`TotalProfitConditions` keeps the current value `z_k`, sets the other
+`TotalRevenueExpenditureBalanceConditions` keeps the current value `z_k`, sets the other
 activity variables to zero, and constructs
 
     F_k = -p' * s(z^(k), p)
 
 where `z^(k)` has `z_k` in component `k` and zero elsewhere.
 
-The automatic multi-activity `TotalProfitConditions` construction is most
+The automatic multi-activity `TotalRevenueExpenditureBalanceConditions` construction is most
 natural for a separable composite producer whose activities can be
 evaluated independently. GEM and GEMB do not test separability.
 
@@ -232,9 +224,20 @@ formulations that may have no equilibrium.
 
 # Consumers
 
-For compensated-demand consumers, GEMB uses an explicit expenditure-income
-condition by default. Producer-specific condition-rule defaults do not
-apply to the default consumer construction.
+For compensated-demand consumers, GEMB uses
+`TotalRevenueExpenditureBalanceConditions` by default. The consumer's
+utility/activity variable and its existing bounds are otherwise unchanged.
+A user-supplied `condition_rule` still overrides this default.
+
+With the default consumer utility bound `u >= 0`, this condition is represented
+as a complementarity relation. It therefore implies exact equality between
+total expenditure and total income whenever the equilibrium utility level is
+strictly positive. Users should choose or normalize the utility index used by
+an activity-demand consumer so that the intended equilibrium utility level is
+strictly positive. This is a requirement of the current activity-demand
+consumer representation, not a general restriction of utility theory. If a
+model may have an equilibrium at zero utility, the default formulation should
+be reviewed explicitly.
 """
 function build_agent(
     spec::AbstractActivityDemandSpec;
@@ -413,18 +416,16 @@ function build_agent(
                 spec.producer_condition_function,
             )
         elseif spec isa PowerProductionSpec
-            TotalProfitConditions()
+            TotalRevenueExpenditureBalanceConditions()
         elseif !isempty(endowments)
-            TotalProfitConditions()
+            TotalRevenueExpenditureBalanceConditions()
         elseif spec isa DCESSpec && !all(iszero, spec.xi)
-            TotalProfitConditions()
+            TotalRevenueExpenditureBalanceConditions()
         else
-            UnitProfitConditions()
+            UnitRevenueExpenditureBalanceConditions()
         end
     else
-        ExplicitAgentConditions(
-            _consumer_activity_condition_function(),
-        )
+        TotalRevenueExpenditureBalanceConditions()
     end
 
     resolved_condition_rule = condition_rule === nothing ?

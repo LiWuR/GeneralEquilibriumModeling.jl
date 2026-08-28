@@ -1,14 +1,14 @@
 # ================================================================
-# test_unit_profit_conditions_v2.jl
+# test_UREBC_v2.jl
 #
-# Regression test for UnitProfitConditions after removal of
+# Regression test for UnitRevenueExpenditureBalanceConditions after removal of
 # activity_structure.
 # ================================================================
 
 using Test
 using GeneralEquilibriumModeling.GEM
 
-@testset "UnitProfitConditions V2" begin
+@testset "UnitRevenueExpenditureBalanceConditions V2" begin
     firm = ProducerAgent(
         [1, 2],
         (variables, prices) -> begin
@@ -17,7 +17,7 @@ using GeneralEquilibriumModeling.GEM
         end;
         variable_names=[:activity],
         variable_start=[4.0],
-        condition_rule=UnitProfitConditions(),
+        condition_rule=UnitRevenueExpenditureBalanceConditions(),
         name=:firm,
     )
 
@@ -48,7 +48,7 @@ using GeneralEquilibriumModeling.GEM
 
     @test result.solved
     @test result.mcp_solved
-    @test agent_condition_rule(firm) isa UnitProfitConditions
+    @test agent_condition_rule(firm) isa UnitRevenueExpenditureBalanceConditions
     @test agent_uses_automatic_conditions(firm)
 
     @test isapprox(
@@ -77,4 +77,4 @@ using GeneralEquilibriumModeling.GEM
     @test result.max_natural_residual <= 1.0e-8
 end
 
-println("UnitProfitConditions V2 regression test passed.")
+println("UnitRevenueExpenditureBalanceConditions V2 regression test passed.")

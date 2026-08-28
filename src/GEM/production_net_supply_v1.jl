@@ -65,7 +65,7 @@ are accumulated into one net-supply component.
 
 The mapping is independent of the producer's behavioral condition rule.
 
-For production-function agents using `StationaryProductionConditions` or
+For production-function agents using `ProductionStationarityConditions` or
 `CostMinimizationKKTConditions`, the current GEM solver requires the
 `net_supply_function` to be a `ProductionNetSupply` object rather than an
 arbitrary Julia function.

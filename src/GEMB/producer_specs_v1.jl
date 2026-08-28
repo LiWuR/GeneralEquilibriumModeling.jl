@@ -28,7 +28,7 @@ product function.
 
 `behavior` selects the existing GEM production-condition path:
 
-- `:stationary` for first-order stationary production conditions;
+- `:stationary` for first-order production stationarity conditions;
 - `:cost_min` for cost-minimization KKT conditions.
 
 The production function may accept either

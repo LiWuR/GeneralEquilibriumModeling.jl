@@ -2,6 +2,7 @@
 
 [![CI](https://github.com/LiWuR/GeneralEquilibriumModeling.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/LiWuR/GeneralEquilibriumModeling.jl/actions/workflows/CI.yml)
 [![Documentation](https://img.shields.io/badge/docs-dev-blue.svg)](https://LiWuR.github.io/GeneralEquilibriumModeling.jl/dev/)
+[![codecov](https://codecov.io/gh/LiWuR/GeneralEquilibriumModeling.jl/graph/badge.svg)](https://codecov.io/gh/LiWuR/GeneralEquilibriumModeling.jl)
 
 **GeneralEquilibriumModeling.jl** is a Julia package for general-equilibrium modeling. It combines a low-level equilibrium engine with a higher-level model-building layer in one package:
 
@@ -53,31 +54,6 @@ using GeneralEquilibriumModeling.GEM
 using GeneralEquilibriumModeling.GEMB
 ```
 
-## Package structure
-
-```text
-GeneralEquilibriumModeling
-├── GEM   # core equilibrium modeling and solvers
-└── GEMB  # high-level builders and economic specifications
-```
-
-The source tree, tests, examples, and documentation follow the same separation:
-
-```text
-src/GEM/
-src/GEMB/
-
-test/gem/
-test/gemb/
-test/integration/
-
-examples/gem/
-examples/gemb/
-
-docs/src/gem/
-docs/src/gemb/
-```
-
 ## GEM: core equilibrium engine
 
 `GEM` formulates and solves general-equilibrium models as mixed complementarity problems. Economic agents are represented through a unified net-supply framework, and agent optimality conditions, market-clearing conditions, and auxiliary equilibrium equations are assembled into one equilibrium system.
@@ -106,7 +82,7 @@ Its modeling interfaces include:
 - generic `ActivityDemandSpec`;
 - marginal-utility and Marshallian-demand consumers;
 - production-function-based agents;
-- producer condition rules such as `UnitProfitConditions` and `TotalProfitConditions`;
+- producer condition rules such as `UnitRevenueExpenditureBalanceConditions` and `TotalRevenueExpenditureBalanceConditions`;
 - condition-only agents for endogenous policy and closure variables;
 - ad valorem claims;
 - multiple-output and joint-production models;

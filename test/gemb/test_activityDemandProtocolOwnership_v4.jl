@@ -33,15 +33,21 @@ using GeneralEquilibriumModeling.GEMB
     )
 
     specs =
-        read(
-            specs_path,
-            String,
+        replace(
+            read(
+                specs_path,
+                String,
+            ),
+            "\r\n" => "\n",
         )
 
     builder =
-        read(
-            builder_path,
-            String,
+        replace(
+            read(
+                builder_path,
+                String,
+            ),
+            "\r\n" => "\n",
         )
 
     @test occursin(
@@ -137,7 +143,7 @@ using GeneralEquilibriumModeling.GEMB
 
     @test GEM.agent_condition_rule(
         firm,
-    ) isa GEM.UnitProfitConditions
+    ) isa GEM.UnitRevenueExpenditureBalanceConditions
 end
 
 println("Activity-demand protocol ownership V4 tests passed.")

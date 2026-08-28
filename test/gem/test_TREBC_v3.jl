@@ -1,11 +1,11 @@
 # ================================================================
-# test_total_profit_conditions_v3.jl
+# test_TREBC_v3.jl
 # ================================================================
 
 using Test
 using GeneralEquilibriumModeling.GEM
 
-@testset "TotalProfitConditions single activity" begin
+@testset "TotalRevenueExpenditureBalanceConditions single activity" begin
     firm = ProducerAgent(
         [1, 2],
         (variables, prices) -> begin
@@ -14,7 +14,7 @@ using GeneralEquilibriumModeling.GEM
         end;
         variable_names=[:activity],
         variable_start=[2.0],
-        condition_rule=TotalProfitConditions(),
+        condition_rule=TotalRevenueExpenditureBalanceConditions(),
         name=:firm,
     )
 
@@ -44,7 +44,7 @@ using GeneralEquilibriumModeling.GEM
 end
 
 
-@testset "TotalProfitConditions separable multi activity" begin
+@testset "TotalRevenueExpenditureBalanceConditions separable multi activity" begin
     firm = ProducerAgent(
         [1, 2, 3],
         (variables, prices) -> begin
@@ -59,7 +59,7 @@ end
         end;
         variable_names=[:activity_1, :activity_2],
         variable_start=[1.0, 2.0],
-        condition_rule=TotalProfitConditions(),
+        condition_rule=TotalRevenueExpenditureBalanceConditions(),
         name=:composite_firm,
     )
 
@@ -90,4 +90,4 @@ end
     @test result.max_natural_residual <= 1.0e-8
 end
 
-println("TotalProfitConditions V3 regression tests passed.")
+println("TotalRevenueExpenditureBalanceConditions V3 regression tests passed.")

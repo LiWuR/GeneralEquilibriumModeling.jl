@@ -102,8 +102,8 @@ end
 
 using ..EquilibriumNetSupplyModelV11:
     NetSupplyEquilibriumModel,
-    UnitProfitConditions,
-    TotalProfitConditions,
+    UnitRevenueExpenditureBalanceConditions,
+    TotalRevenueExpenditureBalanceConditions,
     ExplicitAgentConditions,
     agent_condition_rule,
     agent_net_supply,
@@ -113,7 +113,7 @@ using ..EquilibriumMarginalUtilityModelV5:
     MarginalUtilityConsumerConditions
 
 using ..ProducerConditionsV1:
-    StationaryProductionConditions,
+    ProductionStationarityConditions,
     CostMinimizationKKTConditions
 
 using ..ProductionNetSupplyV1:
@@ -492,7 +492,7 @@ end
 function _build_production_net_supply_expression(
     agent,
     rule::Union{
-        StationaryProductionConditions,
+        ProductionStationarityConditions,
         CostMinimizationKKTConditions,
     },
     local_variables,
@@ -553,7 +553,7 @@ function _build_net_supply_expression!(
         )
         return expr, nothing, :marginal_utility_standard_consumer_expression
 
-    elseif rule isa StationaryProductionConditions
+    elseif rule isa ProductionStationarityConditions
         try
             expr = _build_production_net_supply_expression(
                 agent,
@@ -717,7 +717,7 @@ function _direct_marginal_utility_condition_expression(
 end
 
 function _direct_stationary_production_condition_expression(
-    rule::StationaryProductionConditions,
+    rule::ProductionStationarityConditions,
     agent,
     nv,
     local_variables,
@@ -808,7 +808,7 @@ function _build_condition_expression!(
             ))
         end
 
-    elseif rule isa StationaryProductionConditions
+    elseif rule isa ProductionStationarityConditions
         try
             expr = _direct_stationary_production_condition_expression(
                 rule,
@@ -860,14 +860,14 @@ function _build_condition_expression!(
         method = :explicit_numeric_operator
         force_fd = false
 
-    elseif rule isa UnitProfitConditions
+    elseif rule isa UnitRevenueExpenditureBalanceConditions
 
-        # and is interpreted as UnitProfitConditions.
+        # and is interpreted as UnitRevenueExpenditureBalanceConditions.
         f = _linear_profit_conditions(agent, nv, np, no)
         method = :unit_profit_conditions
         force_fd = false
 
-    elseif rule isa TotalProfitConditions
+    elseif rule isa TotalRevenueExpenditureBalanceConditions
         f = _total_profit_conditions(agent, nv, np, no)
         method = :total_profit_conditions
         force_fd = false
@@ -1154,7 +1154,7 @@ function _evaluate_numeric_v26(
         rule = agent_condition_rule(agent)
 
         if rule isa MarginalUtilityConsumerConditions ||
-           rule isa StationaryProductionConditions ||
+           rule isa ProductionStationarityConditions ||
            rule isa CostMinimizationKKTConditions ||
            rule isa ExplicitAgentConditions
 
@@ -1170,7 +1170,7 @@ function _evaluate_numeric_v26(
             ))
             agent_conditions[i] = values
 
-        elseif rule isa UnitProfitConditions
+        elseif rule isa UnitRevenueExpenditureBalanceConditions
 
             c = Float64[]
             for k in 1:nv
@@ -1186,7 +1186,7 @@ function _evaluate_numeric_v26(
             end
             agent_conditions[i] = c
 
-        elseif rule isa TotalProfitConditions
+        elseif rule isa TotalRevenueExpenditureBalanceConditions
             c = Float64[]
 
             for k in 1:nv

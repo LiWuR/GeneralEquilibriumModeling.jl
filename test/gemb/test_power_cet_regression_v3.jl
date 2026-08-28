@@ -12,7 +12,7 @@
 #
 # Coverage:
 #   1. PowerProductionSpec formulas and validation.
-#   2. Power default TotalProfitConditions and explicit override.
+#   2. Power default TotalRevenueExpenditureBalanceConditions and explicit override.
 #   3. CETSpec formulas, et interface, and fixed-share et=0 limit.
 #   4. CET output_spec routing and backward-compatible fixed outputs.
 #   5. Power input technology combined with CET outputs.
@@ -47,7 +47,7 @@ using GeneralEquilibriumModeling.GEMB
 
     @test agent_condition_rule(
         power_default,
-    ) isa TotalProfitConditions
+    ) isa TotalRevenueExpenditureBalanceConditions
 
     power_override = build_agent(
         power;
@@ -55,13 +55,13 @@ using GeneralEquilibriumModeling.GEMB
         output_coefficients=[1.0],
         demand_indices=[2],
         activity_start=2.0,
-        condition_rule=UnitProfitConditions(),
+        condition_rule=UnitRevenueExpenditureBalanceConditions(),
         name=:power_override,
     )
 
     @test agent_condition_rule(
         power_override,
-    ) isa UnitProfitConditions
+    ) isa UnitRevenueExpenditureBalanceConditions
 
     cet = CETSpec(
         [0.5, 0.5];
@@ -84,7 +84,7 @@ using GeneralEquilibriumModeling.GEMB
 
     @test agent_condition_rule(
         ces_cet,
-    ) isa UnitProfitConditions
+    ) isa UnitRevenueExpenditureBalanceConditions
 
     power_cet = build_agent(
         power;
@@ -97,7 +97,7 @@ using GeneralEquilibriumModeling.GEMB
 
     @test agent_condition_rule(
         power_cet,
-    ) isa TotalProfitConditions
+    ) isa TotalRevenueExpenditureBalanceConditions
 
     power_repeat = build_agent(
         power;
@@ -110,7 +110,7 @@ using GeneralEquilibriumModeling.GEMB
 
     @test agent_condition_rule(
         power_repeat,
-    ) isa TotalProfitConditions
+    ) isa TotalRevenueExpenditureBalanceConditions
 
     ces_cet_repeat = build_agent(
         CESSpec(
@@ -127,7 +127,7 @@ using GeneralEquilibriumModeling.GEMB
 
     @test agent_condition_rule(
         ces_cet_repeat,
-    ) isa UnitProfitConditions
+    ) isa UnitRevenueExpenditureBalanceConditions
 end
 
 
@@ -184,7 +184,7 @@ end
 
     @test agent_condition_rule(
         power_firm,
-    ) isa TotalProfitConditions
+    ) isa TotalRevenueExpenditureBalanceConditions
 
     # At z = 2, f(x) = sqrt(x) implies x = 4.
     # With p_output = 2 and p_input = 1, total revenue and total
@@ -210,13 +210,13 @@ end
         output_coefficients=[1.0],
         demand_indices=[2],
         activity_start=2.0,
-        condition_rule=UnitProfitConditions(),
+        condition_rule=UnitRevenueExpenditureBalanceConditions(),
         name=:power_unit_override,
     )
 
     @test agent_condition_rule(
         power_unit_override,
-    ) isa UnitProfitConditions
+    ) isa UnitRevenueExpenditureBalanceConditions
 
     @test_throws ArgumentError build_agent(
         power;
@@ -339,7 +339,7 @@ end
 
     @test agent_condition_rule(
         cet_firm,
-    ) isa UnitProfitConditions
+    ) isa UnitRevenueExpenditureBalanceConditions
 
     cet_prices = [
         2.0,
@@ -408,7 +408,7 @@ end
 
     @test agent_condition_rule(
         power_cet_firm,
-    ) isa TotalProfitConditions
+    ) isa TotalRevenueExpenditureBalanceConditions
 
     power_cet_prices = [
         2.0,
@@ -460,7 +460,7 @@ end
 
     @test agent_condition_rule(
         fixed_output_firm,
-    ) isa UnitProfitConditions
+    ) isa UnitRevenueExpenditureBalanceConditions
 end
 
 
@@ -564,7 +564,7 @@ end
 
     @test agent_condition_rule(
         symmetric_firm,
-    ) isa UnitProfitConditions
+    ) isa UnitRevenueExpenditureBalanceConditions
 
     @test symmetric_cet.et == 1.0
 

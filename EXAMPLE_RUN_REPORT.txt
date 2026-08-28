@@ -1,0 +1,39 @@
+GeneralEquilibriumModeling.jl example run report
+Generated: 2026-08-28 12:02:58
+Root: D:\Ju\GeneralEquilibriumModeling
+Logs: D:\Ju\GeneralEquilibriumModeling\_migration\example_run_logs\20260828_115103
+
+Summary:
+  total:  29
+  passed: 29
+  failed: 0
+
+PASS  examples/gem/gem_CD_adValoremClaim_consumerNoVariables_nc3_na2.jl  21.48 s
+PASS  examples/gem/gem_CD_consumerNoVariables_nc2_na2.jl  20.337 s
+PASS  examples/gem/gem_CD_costMinKKT_nc2_na2.jl  19.547 s
+PASS  examples/gem/gem_CD_explicitConditions_nc2_na2.jl  22.023 s
+PASS  examples/gem/gem_CD_externality_observedVariable_consumerNoVariables_nc2_na2.jl  20.362 s
+PASS  examples/gem/gem_CD_marginalUtility_nc2_na2.jl  21.174 s
+PASS  examples/gem/gem_CD_specificSubsidyClaim_consumerNoVariables_nc3_na2.jl  20.15 s
+PASS  examples/gem/gem_pollution_negativePrice_nc3_na2.jl  19.776 s
+PASS  examples/gem/gem_vonNeumann_multiActivity_nc2_na1.jl  19.957 s
+PASS  examples/gemb/gemb_CD_endogenousClaimRateBudget_nc3_na4_v1.jl  28.653 s
+PASS  examples/gemb/gemb_CD_endogenousClaimRateBudget_nc3_na4_v2.jl  28.011 s
+PASS  examples/gemb/gemb_CD_endogenousClaimRate_nc3_na3_v1.jl  28.22 s
+PASS  examples/gemb/gemb_CD_endogenousClaimRate_nc3_na3_v2.jl  27.83 s
+PASS  examples/gemb/gemb_CD_specificSubsidyClaim_nc3_na2_v1.jl  25.435 s
+PASS  examples/gemb/gemb_CES_CET_nc4_na2_v2.jl  24.855 s
+PASS  examples/gemb/gemb_CES_nc2_na2_v4.jl  26.763 s
+PASS  examples/gemb/gemb_CES_tax_nc4_na3_v3.jl  31.478 s
+PASS  examples/gemb/gemb_activityDemand_CD_nc2_na2_v2.jl  26.811 s
+PASS  examples/gemb/gemb_assetEquilibriumAMSD_nc5_na3_v1.jl  25.759 s
+PASS  examples/gemb/gemb_basicExample_CD_netSupplyAgent_highLevel_nc2_na2_v5.jl  23.203 s
+PASS  examples/gemb/gemb_conditionRule_UREBC_nc2_na2_v2.jl  25.578 s
+PASS  examples/gemb/gemb_conditionRule_explicit_nc2_na2_v1.jl  25.408 s
+PASS  examples/gemb/gemb_exogenousLandPrice_nc3_na3_v6.jl  24.381 s
+PASS  examples/gemb/gemb_exogenousLandPrice_virtualAgent_nc3_na3_v3.jl  26.959 s
+PASS  examples/gemb/gemb_intertemporalEquilibriumCESClaim_nct3_nat3_v3.jl  28.298 s
+PASS  examples/gemb/gemb_intertemporalEquilibriumCESMarginal_nct2_nat2_v2.jl  23.287 s
+PASS  examples/gemb/gemb_intertemporalEquilibriumCES_nct2_nat2_v5.jl  27.145 s
+PASS  examples/gemb/gemb_intertemporalEquilibrium_endogenousInterestRate_nct2_nat3_v1.jl  22.965 s
+PASS  examples/gemb/gemb_intertemporalEquilibrium_variableClaim_nct3_nat3_v1.jl  28.58 s

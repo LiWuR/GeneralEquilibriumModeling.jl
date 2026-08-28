@@ -23,7 +23,7 @@ using GeneralEquilibriumModeling.GEM
         [2],
     )
 
-    firm_conditions = StationaryProductionConditions(
+    firm_conditions = ProductionStationarityConditions(
         production,
         marginal_product,
         firm_net_supply.input_positions,

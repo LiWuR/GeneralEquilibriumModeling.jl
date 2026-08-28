@@ -49,7 +49,7 @@ firm_net_supply = ProductionNetSupply(
     [2, 3],
 )
 
-firm_conditions = StationaryProductionConditions(
+firm_conditions = ProductionStationarityConditions(
     production,
     marginal_product,
     firm_net_supply.input_positions,

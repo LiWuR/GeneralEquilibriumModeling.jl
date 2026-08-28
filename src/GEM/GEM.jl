@@ -25,7 +25,7 @@ module GEM
 # ----------------------------------------------------------------
 
 include(joinpath(@__DIR__, "equilibrium_result_v1.jl"))
-include(joinpath(@__DIR__, "equilibrium_agent_core_profit_conditions_v5.jl"))
+include(joinpath(@__DIR__, "equilibrium_agent_core_rebc_v6.jl"))
 
 
 # ----------------------------------------------------------------
@@ -41,7 +41,7 @@ include(joinpath(@__DIR__, "auxiliary_equations_v4.jl"))
 # 3. Net-supply equilibrium model
 # ----------------------------------------------------------------
 
-include(joinpath(@__DIR__, "equilibrium_model_net_supply_profit_conditions_v4.jl"))
+include(joinpath(@__DIR__, "equilibrium_model_net_supply_rebc_v5.jl"))
 
 
 # ----------------------------------------------------------------
@@ -69,8 +69,8 @@ include(joinpath(@__DIR__, "solve_equilibrium_model_mcp_jump_v10_v19.jl"))
 using .EquilibriumNetSupplyModelV11:
     AbstractNetSupplyAgent,
     AbstractAgentConditionRule,
-    UnitProfitConditions,
-    TotalProfitConditions,
+    UnitRevenueExpenditureBalanceConditions,
+    TotalRevenueExpenditureBalanceConditions,
     ExplicitAgentConditions,
     AgentVariableRef,
     PriceVariableRef,
@@ -118,7 +118,7 @@ using .EquilibriumMarginalUtilityModelV5:
     evaluate_marginal_utility
 
 using .ProducerConditionsV1:
-    StationaryProductionConditions,
+    ProductionStationarityConditions,
     CostMinimizationKKTConditions,
     evaluate_production,
     evaluate_marginal_product,
@@ -183,8 +183,8 @@ export NetSupplyEquilibriumModel
 
 export AbstractNetSupplyAgent
 export AbstractAgentConditionRule
-export UnitProfitConditions
-export TotalProfitConditions
+export UnitRevenueExpenditureBalanceConditions
+export TotalRevenueExpenditureBalanceConditions
 export ExplicitAgentConditions
 
 export AgentVariableRef
@@ -197,7 +197,7 @@ export AuxiliaryEquation
 export MarginalUtilityConsumerConditions
 export evaluate_marginal_utility
 
-export StationaryProductionConditions
+export ProductionStationarityConditions
 export CostMinimizationKKTConditions
 export evaluate_production
 export evaluate_marginal_product

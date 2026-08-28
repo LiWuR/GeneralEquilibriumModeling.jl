@@ -4,8 +4,8 @@ using GeneralEquilibriumModeling.GEM
 @testset "GEM" begin
     @testset "Profit condition rules" begin
         include("test_profit_condition_rule_dispatch_v2.jl")
-        include("test_unit_profit_conditions_v2.jl")
-        include("test_total_profit_conditions_v3.jl")
+        include("test_UREBC_v2.jl")
+        include("test_TREBC_v3.jl")
     end
 
     @testset "Core regression tests" begin

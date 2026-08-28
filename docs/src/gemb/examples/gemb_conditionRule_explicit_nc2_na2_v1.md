@@ -21,7 +21,7 @@ Source file: `examples/gemb_conditionRule_explicit_nc2_na2_v1.jl`
 #     1 unit of activity produces 1 unit of product
 #     and requires 1 unit of labor.
 #
-# Unlike the UnitProfitConditions example, the producer condition is
+# Unlike the UnitRevenueExpenditureBalanceConditions example, the producer condition is
 # supplied explicitly by the researcher through
 # producer_condition_function.
 #

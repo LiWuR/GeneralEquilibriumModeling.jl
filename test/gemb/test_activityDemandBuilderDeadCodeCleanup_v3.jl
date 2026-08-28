@@ -79,7 +79,7 @@ const _RETIRED_ACTIVITY_HELPERS = (
         )
     end
 
-    # Generic activity-demand producer still uses UnitProfitConditions.
+    # Generic activity-demand producer still uses UnitRevenueExpenditureBalanceConditions.
     generic_spec =
         ActivityDemandSpec(
             (activity, prices) -> [
@@ -99,7 +99,7 @@ const _RETIRED_ACTIVITY_HELPERS = (
 
     @test GEM.agent_condition_rule(
         generic_firm,
-    ) isa GEM.UnitProfitConditions
+    ) isa GEM.UnitRevenueExpenditureBalanceConditions
 
     # A custom explicit producer condition remains supported.
     custom_spec =
@@ -130,7 +130,7 @@ const _RETIRED_ACTIVITY_HELPERS = (
         custom_firm,
     ) isa GEM.ExplicitAgentConditions
 
-    # Displaced CES still defaults to TotalProfitConditions.
+    # Displaced CES still defaults to TotalRevenueExpenditureBalanceConditions.
     displaced =
         build_agent(
             DCESSpec(
@@ -148,7 +148,7 @@ const _RETIRED_ACTIVITY_HELPERS = (
 
     @test GEM.agent_condition_rule(
         displaced,
-    ) isa GEM.TotalProfitConditions
+    ) isa GEM.TotalRevenueExpenditureBalanceConditions
 
     # Claim construction remains on the ordinary net-supply path.
     claimed =
@@ -170,7 +170,7 @@ const _RETIRED_ACTIVITY_HELPERS = (
     @test claimed isa GEM.NetSupplyAgent
     @test GEM.agent_condition_rule(
         claimed,
-    ) isa GEM.UnitProfitConditions
+    ) isa GEM.UnitRevenueExpenditureBalanceConditions
 end
 
 println("Activity-demand builder dead-code cleanup tests passed.")

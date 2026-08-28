@@ -131,7 +131,7 @@ model = GEMBModel(
 #     q_claim = t * z / p_claim.
 #
 # Because this demand system is homogeneous in activity, the default
-# UnitProfitConditions used by GEMB gives
+# UnitRevenueExpenditureBalanceConditions used by GEMB gives
 #
 #     unit ordinary input cost
 #     + p_claim * unit claim demand

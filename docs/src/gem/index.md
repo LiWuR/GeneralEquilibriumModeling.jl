@@ -2,22 +2,23 @@
 CurrentModule = GEM
 ```
 
-# GEM.jl
+# GEM
 
-GEM is a Julia package for formulating and solving general equilibrium models
-as mixed complementarity problems. It represents consumers, producers, and
-other economic agents through a unified net-supply framework, and combines
-agent optimality conditions, market-clearing conditions, and auxiliary
-equilibrium equations in a single system.
+GEM is the low-level core submodule of `GeneralEquilibriumModeling.jl`. It
+formulates and solves general equilibrium models as mixed complementarity
+problems. Consumers, producers, and other economic agents are represented
+through a unified net-supply framework, while agent optimality conditions,
+market-clearing conditions, and auxiliary equilibrium equations are assembled
+into a single equilibrium system.
 
-GEM is the core equilibrium-modeling and solution package. It exposes the
-low-level net-supply, complementarity-condition, model-construction, and solver
-interfaces used by the broader GEM ecosystem. For most routine modeling tasks,
-users are encouraged to work through the higher-level wrapper package `GEMB`,
-which provides more convenient model-building interfaces while using GEM as the
-underlying equilibrium engine. Direct use of GEM is mainly useful when users
-need fine-grained control over agent net supplies, complementarity conditions,
-variable bounds, or custom equilibrium structures.
+GEM exposes the low-level net-supply, complementarity-condition,
+model-construction, and solver interfaces used by `GeneralEquilibriumModeling.jl`.
+For most routine economic modeling tasks, users are encouraged to work through
+the higher-level `GEMB` submodule, which provides more convenient model-building
+interfaces while using GEM as the underlying equilibrium engine. Direct use of
+GEM is mainly useful when users need fine-grained control over agent net
+supplies, complementarity conditions, variable bounds, or custom equilibrium
+structures.
 
 GEM supports marginal-utility consumers, automatic zero-profit conditions,
 stationary-production conditions, cost-minimization KKT conditions, multiple
@@ -59,7 +60,7 @@ reference pages. The following interfaces are useful starting points:
 - [`NetSupplyEquilibriumModel`](@ref)
 - [`NetSupplyAgent`](@ref)
 - [`MarginalUtilityConsumerConditions`](@ref)
-- [`StationaryProductionConditions`](@ref)
+- [`ProductionStationarityConditions`](@ref)
 - [`CostMinimizationKKTConditions`](@ref)
 - [`ProductionNetSupply`](@ref)
 - [`EquilibriumResult`](@ref)

@@ -1,3 +1,3 @@
-# Add integration tests here after GEM and GEMB load successfully.
-# Target chain:
-# GEMB specification -> GEMB.build_agent -> GEM model -> solver
+# GEM-GEMB integration tests
+
+include("test_gemb_gem_baseline_v2.jl")
