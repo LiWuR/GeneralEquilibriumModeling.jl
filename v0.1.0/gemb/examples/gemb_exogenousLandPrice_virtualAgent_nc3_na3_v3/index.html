@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Virtual-agent land-price model · GeneralEquilibriumModeling.jl</title><meta name="title" content="Virtual-agent land-price model · GeneralEquilibriumModeling.jl"/><meta property="og:title" content="Virtual-agent land-price model · GeneralEquilibriumModeling.jl"/><meta property="twitter:title" content="Virtual-agent land-price model · GeneralEquilibriumModeling.jl"/><meta name="description" content="Documentation for GeneralEquilibriumModeling.jl."/><meta property="og:description" content="Documentation for GeneralEquilibriumModeling.jl."/><meta property="twitter:description" content="Documentation for GeneralEquilibriumModeling.jl."/><script data-outdated-warner src="../../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../../assets/documenter.js"></script><script src="../../../search_index.js"></script><script src="../../../siteinfo.js"></script><script src="../../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../../../">GeneralEquilibriumModeling.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../../../">Home</a></li><li><span class="tocitem">GEM</span><ul><li><a class="tocitem" href="../../../gem/">Overview</a></li><li><input class="collapse-toggle" id="menuitem-2-2" type="checkbox"/><label class="tocitem" for="menuitem-2-2"><span class="docs-label">API Reference</span><i class="docs-chevron"></i></label><ul class="collapsed"><li><a class="tocitem" href="../../../gem/api/">API index</a></li><li><input class="collapse-toggle" id="menuitem-2-2-2" type="checkbox"/><label class="tocitem" for="menuitem-2-2-2"><span class="docs-label">Core API</span><i class="docs-chevron"></i></label><ul class="collapsed"><li><a class="tocitem" href="../../../gem/api/GEM/">Public API</a></li><li><a class="tocitem" href="../../../gem/api/GEM_EquilibriumAgentCoreV1/">Agents and condition rules</a></li><li><a class="tocitem" href="../../../gem/api/GEM_EquilibriumNetSupplyModelV11/">Equilibrium models</a></li><li><a class="tocitem" href="../../../gem/api/GEM_EquilibriumVariableRefsV3/">Variable references</a></li><li><a class="tocitem" href="../../../gem/api/GEM_ProducerConditionsV1/">Production conditions</a></li><li><a class="tocitem" href="../../../gem/api/GEM_EquilibriumMarginalUtilityModelV5/">Marginal-utility conditions</a></li><li><a class="tocitem" href="../../../gem/api/GEM_ProductionNetSupplyV1/">Production net supply</a></li><li><a class="tocitem" href="../../../gem/api/GEM_EquilibriumResultV1/">Equilibrium results</a></li></ul></li><li><input class="collapse-toggle" id="menuitem-2-2-3" type="checkbox"/><label class="tocitem" for="menuitem-2-2-3"><span class="docs-label">Auxiliary system</span><i class="docs-chevron"></i></label><ul class="collapsed"><li><a class="tocitem" href="../../../gem/api/GEM_AuxiliaryVariablesV1/">Auxiliary variables</a></li><li><a class="tocitem" href="../../../gem/api/GEM_AuxiliaryEquationsV4/">Auxiliary equations</a></li><li><a class="tocitem" href="../../../gem/api/GEM_AuxiliaryEquationJumpV1/">Auxiliary-equation JuMP support</a></li></ul></li><li><input class="collapse-toggle" id="menuitem-2-2-4" type="checkbox"/><label class="tocitem" for="menuitem-2-2-4"><span class="docs-label">JuMP and solver</span><i class="docs-chevron"></i></label><ul class="collapsed"><li><a class="tocitem" href="../../../gem/api/GEM_EquilibriumJumpModelV2/">Equilibrium JuMP model</a></li><li><a class="tocitem" href="../../../gem/api/GEM_EquilibriumModelSolverV10V19/">MCP solver</a></li></ul></li></ul></li><li><input class="collapse-toggle" id="menuitem-2-3" type="checkbox"/><label class="tocitem" for="menuitem-2-3"><span class="docs-label">Examples</span><i class="docs-chevron"></i></label><ul class="collapsed"><li><a class="tocitem" href="../../../gem/examples/gem_CD_consumerNoVariables_nc2_na2/">Cobb–Douglas exchange</a></li><li><a class="tocitem" href="../../../gem/examples/gem_CD_costMinKKT_nc2_na2/">Cost-minimization KKT</a></li><li><a class="tocitem" href="../../../gem/examples/gem_CD_explicitConditions_nc2_na2/">Explicit conditions</a></li><li><a class="tocitem" href="../../../gem/examples/gem_CD_marginalUtility_nc2_na2/">Marginal utility</a></li><li><a class="tocitem" href="../../../gem/examples/gem_CD_adValoremClaim_consumerNoVariables_nc3_na2/">Ad valorem claim</a></li><li><a class="tocitem" href="../../../gem/examples/gem_CD_specificSubsidyClaim_consumerNoVariables_nc3_na2/">Specific subsidy via claim</a></li><li><a class="tocitem" href="../../../gem/examples/gem_CD_externality_observedVariable_consumerNoVariables_nc2_na2/">Externality and observed variables</a></li><li><a class="tocitem" href="../../../gem/examples/gem_pollution_negativePrice_nc3_na2/">Pollution with negative price</a></li><li><a class="tocitem" href="../../../gem/examples/gem_vonNeumann_multiActivity_nc2_na1/">von Neumann multi-activity</a></li></ul></li></ul></li><li><span class="tocitem">GEMB</span><ul><li><a class="tocitem" href="../../">Overview</a></li><li><input class="collapse-toggle" id="menuitem-3-2" type="checkbox"/><label class="tocitem" for="menuitem-3-2"><span class="docs-label">Guides</span><i class="docs-chevron"></i></label><ul class="collapsed"><li><a class="tocitem" href="../../ad_valorem_claims/">Ad valorem claims</a></li><li><a class="tocitem" href="../../condition_agents/">Condition agents</a></li><li><a class="tocitem" href="../../intertemporal_equilibrium/">Intertemporal equilibrium</a></li></ul></li><li><input class="collapse-toggle" id="menuitem-3-3" type="checkbox"/><label class="tocitem" for="menuitem-3-3"><span class="docs-label">API Reference</span><i class="docs-chevron"></i></label><ul class="collapsed"><li><a class="tocitem" href="../../api/">API index</a></li><li><a class="tocitem" href="../../api/GEMB/">Public API</a></li><li><a class="tocitem" href="../../api/GEMB_Specifications/">Specifications and economic functions</a></li><li><a class="tocitem" href="../../api/GEMB_AgentBuilders/">Agent builders and condition agents</a></li><li><a class="tocitem" href="../../api/GEMB_ModelingFramework/">High-level model and intertemporal API</a></li><li><a class="tocitem" href="../../api/GEMB_AssetEquilibrium/">Asset equilibrium</a></li></ul></li><li><input class="collapse-toggle" id="menuitem-3-4" type="checkbox" checked/><label class="tocitem" for="menuitem-3-4"><span class="docs-label">Examples</span><i class="docs-chevron"></i></label><ul class="collapsed"><li><input class="collapse-toggle" id="menuitem-3-4-1" type="checkbox"/><label class="tocitem" for="menuitem-3-4-1"><span class="docs-label">Core and static models</span><i class="docs-chevron"></i></label><ul class="collapsed"><li><a class="tocitem" href="../gemb_CES_nc2_na2_v4/">CES</a></li><li><a class="tocitem" href="../gemb_CES_tax_nc4_na3_v3/">CES with tax</a></li><li><a class="tocitem" href="../gemb_CES_CET_nc4_na2_v2/">CES–CET</a></li><li><a class="tocitem" href="../gemb_activityDemand_CD_nc2_na2_v2/">Activity-demand Cobb–Douglas</a></li><li><a class="tocitem" href="../gemb_conditionRule_explicit_nc2_na2_v1/">Explicit condition rule</a></li><li><a class="tocitem" href="../gemb_conditionRule_unitProfit_nc2_na2_v2/">Unit-profit condition rule</a></li></ul></li><li><input class="collapse-toggle" id="menuitem-3-4-2" type="checkbox"/><label class="tocitem" for="menuitem-3-4-2"><span class="docs-label">Claims and taxes</span><i class="docs-chevron"></i></label><ul class="collapsed"><li><a class="tocitem" href="../gemb_CD_specificSubsidyClaim_nc3_na2_v1/">Specific subsidy via claim</a></li><li><a class="tocitem" href="../gemb_CD_endogenousClaimRate_nc3_na3_v1/">Endogenous claim rate I</a></li><li><a class="tocitem" href="../gemb_CD_endogenousClaimRate_nc3_na3_v2/">Endogenous claim rate II</a></li><li><a class="tocitem" href="../gemb_CD_endogenousClaimRateBudget_nc3_na4_v1/">Budget-balanced claim rate I</a></li><li><a class="tocitem" href="../gemb_CD_endogenousClaimRateBudget_nc3_na4_v2/">Budget-balanced claim rate II</a></li></ul></li><li><input class="collapse-toggle" id="menuitem-3-4-3" type="checkbox" checked/><label class="tocitem" for="menuitem-3-4-3"><span class="docs-label">Virtual-agent constructions</span><i class="docs-chevron"></i></label><ul class="collapsed"><li><a class="tocitem" href="../gemb_exogenousLandPrice_nc3_na3_v6/">Exogenous land price</a></li><li class="is-active"><a class="tocitem" href>Virtual-agent land-price model</a></li></ul></li><li><input class="collapse-toggle" id="menuitem-3-4-4" type="checkbox"/><label class="tocitem" for="menuitem-3-4-4"><span class="docs-label">Asset equilibrium</span><i class="docs-chevron"></i></label><ul class="collapsed"><li><a class="tocitem" href="../gemb_assetEquilibriumAMSD_nc5_na3_v1/">Asset equilibrium (AMSD)</a></li></ul></li><li><input class="collapse-toggle" id="menuitem-3-4-5" type="checkbox"/><label class="tocitem" for="menuitem-3-4-5"><span class="docs-label">Intertemporal models</span><i class="docs-chevron"></i></label><ul class="collapsed"><li><a class="tocitem" href="../gemb_intertemporalEquilibriumCES_nct2_nat2_v5/">Intertemporal CES</a></li><li><a class="tocitem" href="../gemb_intertemporalEquilibriumCESMarginal_nct2_nat2_v2/">Intertemporal CES marginal utility</a></li><li><a class="tocitem" href="../gemb_intertemporalEquilibriumCESClaim_nct3_nat3_v3/">Intertemporal CES with claim</a></li><li><a class="tocitem" href="../gemb_intertemporalEquilibrium_endogenousInterestRate_nct2_nat3_v1/">Endogenous interest rate</a></li><li><a class="tocitem" href="../gemb_intertemporalEquilibrium_variableClaim_nct3_nat3_v1/">Variable claim</a></li></ul></li></ul></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">GEMB</a></li><li><a class="is-disabled">Examples</a></li><li><a class="is-disabled">Virtual-agent constructions</a></li><li class="is-active"><a href>Virtual-agent land-price model</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Virtual-agent land-price model</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/LiWuR/GeneralEquilibriumModeling.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="gemb*exogenousLandPrice*virtualAgent*nc3*na3_v3"><a class="docs-heading-anchor" href="#gemb*exogenousLandPrice*virtualAgent*nc3*na3_v3">gemb<em>exogenousLandPrice</em>virtualAgent<em>nc3</em>na3_v3</a><a id="gemb*exogenousLandPrice*virtualAgent*nc3*na3_v3-1"></a><a class="docs-heading-anchor-permalink" href="#gemb*exogenousLandPrice*virtualAgent*nc3*na3_v3" title="Permalink"></a></h1><p>Source file: <code>examples/gemb_exogenousLandPrice_virtualAgent_nc3_na3_v3.jl</code></p><pre><code class="language-julia hljs"># ================================================================
+# gemb_exogenousLandPrice_virtualAgent_nc3_na3_v3.jl
+#
+# High-level GEMB validation of the virtual-agent representation of
+# an auxiliary variable and its paired auxiliary condition.
+#
+# Three commodities:
+#   1. output
+#   2. labor
+#   3. land
+#
+# Three agents:
+#   1. producer
+#   2. laborer
+#   3. land owner
+#
+# Original low-level closure:
+#
+#   landSupply = AuxiliaryVariable(...)
+#   0 &lt;= p_land - land_price  _|_  landSupply &gt;= 0
+#
+# High-level virtual-agent closure:
+#
+#   landSupply  &lt;-&gt;  virtual agent activity
+#   p_land - land_price  &lt;-&gt;  explicit activity condition
+#
+# The land owner supplies its activity level of land
+# and spends all land income on output:
+#
+#   z_T = land supply
+#   C_T = p_T * z_T / p_Y
+#
+# so its local net supply in [land, output] order is
+#
+#   [z_T, -p_T * z_T / p_Y].
+#
+# Benchmark equilibrium:
+#   prices = [2, 1, 4]
+#   producer activity = 100
+#   virtual land-supply activity = 25
+#
+# No GEM AuxiliaryVariable or AuxiliaryEquation is used.
+# ================================================================
+
+using GeneralEquilibriumModeling.GEM
+using GeneralEquilibriumModeling.GEMB
+
+labor_endowment = 100.0
+land_price = 4.0
+
+model = GEMBModel(
+    [:output, :labor, :land];
+    numeraire=:labor,
+    numeraire_value=1.0,
+)
+
+producer = add_agent!(
+    model,
+    CESSpec(
+        [0.5, 0.5];
+        es=1.0,
+        alpha=2.0,
+    );
+    outputs=:output,
+    demands=[:labor, :land],
+    activity_start=100.0,
+    name=:producer,
+)
+
+laborer = add_agent!(
+    model,
+    MarshallDemandConsumerSpec(
+        (income, prices) -&gt; [income / prices[1]],
+    );
+    demands=:output,
+    endowments=:labor,
+    endowment_quantities=labor_endowment,
+    name=:laborer,
+)
+
+land_supplier_spec = ActivityDemandSpec(
+    (
+        activity,
+        prices,
+        observed_values,
+    ) -&gt; begin
+        pY = prices[1]
+        pT = observed_values[1]
+
+        return [
+            pT * activity / pY,
+        ]
+    end;
+    producer_condition_function=
+        (
+            local_variables,
+            local_prices,
+            net_supply,
+            observed_values,
+        ) -&gt; [
+            local_prices[1] - land_price,
+        ],
+)
+
+landOwner = add_agent!(
+    model,
+    land_supplier_spec;
+    outputs=:land,
+    demands=:output,
+    observed_variables=[
+        PriceVariableRef(:land),
+    ],
+    activity_start=25.0,
+    activity_lower_bound=0.0,
+    activity_upper_bound=Inf,
+    name=:landOwner,
+)
+
+result = solve(
+    model;
+    p0=[2.0, 1.0, 4.0],
+    residual_tol=1.0e-8,
+    silent=true,
+)
+
+producer_activity =
+    result.agent_variable_values[1][1]
+
+land_supply =
+    result.agent_variable_values[3][1]
+
+println()
+println(&quot;========== Exogenous land price: virtual-agent validation ==========&quot;)
+println(&quot;Solved: &quot;, result.solved)
+println(&quot;Prices [output, labor, land]: &quot;, result.prices)
+println(&quot;Producer activity: &quot;, producer_activity)
+println(&quot;Land supply (virtual-agent activity): &quot;, land_supply)
+println(&quot;Producer net supply: &quot;, result.agent_net_supplies[1])
+println(&quot;Laborer net supply: &quot;, result.agent_net_supplies[2])
+println(&quot;Land-owner net supply: &quot;, result.agent_net_supplies[3])
+println(&quot;Total net supply: &quot;, result.total_net_supply)
+println(&quot;Max natural residual: &quot;, result.max_natural_residual)
+println(&quot;===================================================================&quot;)
+
+@assert result.solved
+
+@assert isapprox(
+    result.prices,
+    [2.0, 1.0, 4.0];
+    atol=1.0e-7,
+    rtol=1.0e-7,
+)
+
+@assert isapprox(
+    producer_activity,
+    100.0;
+    atol=1.0e-7,
+    rtol=1.0e-7,
+)
+
+@assert isapprox(
+    land_supply,
+    25.0;
+    atol=1.0e-7,
+    rtol=1.0e-7,
+)
+
+@assert maximum(abs, result.total_net_supply) &lt;= 1.0e-7
+@assert result.max_natural_residual &lt;= 1.0e-7
+</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../gemb_exogenousLandPrice_nc3_na3_v6/">« Exogenous land price</a><a class="docs-footer-nextpage" href="../gemb_assetEquilibriumAMSD_nc5_na3_v1/">Asset equilibrium (AMSD) »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.17.0 on <span class="colophon-date" title="Saturday 29 August 2026 08:14">Saturday 29 August 2026</span>. Using Julia version 1.12.7.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
