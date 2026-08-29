@@ -1,7 +1,7 @@
 authors = ["LiWuR <liwu.shu@qq.com> and contributors"]
 name = "GeneralEquilibriumModeling"
 uuid = "3518db58-6bfb-461b-a4fb-cfc29efbd750"
-version = "0.1.0"
+version = "0.1.1"
 [compat]
 ForwardDiff = "0.10, 1"
 JuMP = "1"
