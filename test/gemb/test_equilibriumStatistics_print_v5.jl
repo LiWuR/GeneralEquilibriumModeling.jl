@@ -99,13 +99,43 @@ using GeneralEquilibriumModeling
         output,
     )
 
+    @test !occursin(
+        "\nAgent net supply values\n",
+        output,
+    )
+
+    @test !occursin(
+        "\nTotal net supply\n",
+        output,
+    )
+
+    # Sums are now integrated into the two matrix displays.
+    @test count(
+        "Sum",
+        output,
+    ) >= 3
+
+    # Net-supply quantity totals by commodity are displayed in the
+    # rightmost column.
     @test occursin(
-        "Agent net supply values",
+        "7.0",
+        output,
+    )
+
+    # The net-supply value matrix includes the agent totals
+    # firm = 5 and consumer = 8, plus the grand total 13.
+    @test occursin(
+        "5.0",
         output,
     )
 
     @test occursin(
-        "Total net supply",
+        "8.0",
+        output,
+    )
+
+    @test occursin(
+        "13.0",
         output,
     )
 

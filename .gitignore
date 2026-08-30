@@ -8,6 +8,8 @@
 *.jl.*.cov
 *.jl.mem
 
+*_RUN_REPORT.txt
+
 # Local migration/build artifacts
 _migration/
 /docs/_migration/

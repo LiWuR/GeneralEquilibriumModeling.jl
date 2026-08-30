@@ -5,10 +5,8 @@
 # ================================================================
 
 using Test
-using GeneralEquilibriumModeling
-
-const GEM = GeneralEquilibriumModeling.GEM
-const GEMB = GeneralEquilibriumModeling.GEMB
+using GeneralEquilibriumModeling.GEM
+using GeneralEquilibriumModeling.GEMB
 
 
 @testset "GEMB add_net_supply_agent! STEP 3" begin

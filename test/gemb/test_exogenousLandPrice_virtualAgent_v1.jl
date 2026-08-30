@@ -12,8 +12,10 @@ using Test
         joinpath(
             @__DIR__,
             "..",
+            "..",
             "examples",
-            "gemb_exogenousLandPrice_virtualAgent_nc3_na3_v1.jl",
+            "gemb",
+            "gemb_exogenousLandPrice_virtualAgent_nc3_na3_v3.jl",
         ),
     )
 

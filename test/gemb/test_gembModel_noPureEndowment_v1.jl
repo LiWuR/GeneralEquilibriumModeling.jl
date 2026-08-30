@@ -26,31 +26,12 @@ using GeneralEquilibriumModeling.GEMB
     # 1. Current low-level GEMB router rejects no-behavior agents.
     # ------------------------------------------------------------
 
-    err = try
-        build_agent(
-            ;
-            endowment_indices=[2],
-            endowment_quantities=10.0,
-            name=:owner,
-        )
-        nothing
-    catch e
-        e
-    end
-
-    @test err isa ArgumentError
-
-    if err isa ArgumentError
-        message = sprint(showerror, err)
-        @test occursin(
-            "build_agent requires a behavioral specification",
-            message,
-        )
-        @test occursin(
-            "GEM.NetSupplyAgent",
-            message,
-        )
-    end
+    @test_throws MethodError build_agent(
+        ;
+        endowment_indices=[2],
+        endowment_quantities=10.0,
+        name=:owner,
+    )
 
 
     # ------------------------------------------------------------

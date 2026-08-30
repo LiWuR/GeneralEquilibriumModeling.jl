@@ -56,8 +56,6 @@
 using Test
 using GeneralEquilibriumModeling.GEMB
 
-#include(joinpath(@__DIR__, "equilibrium_models_v21.jl"))
-#using .EquilibriumModelsV21
 
 const SPECIFIC_SUBSIDY_RATE = -0.20
 const WORKER_LABOR = 80.0

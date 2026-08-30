@@ -6,10 +6,7 @@
 #   2. V13 ActivityDemandSpec integration;
 #   3. generic claim_rate ownership of claim behavior.
 #
-# Run in a fresh Julia session after GEMB.jl includes:
-#
-#   include("CES_v8.jl")
-#   include("net_supply_agent_builders_v13.jl")
+# Run against the currently loaded GEMB module.
 # ================================================================
 
 using Test

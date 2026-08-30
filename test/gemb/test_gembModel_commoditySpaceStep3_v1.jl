@@ -10,7 +10,7 @@
 #   3. CommoditySpec declarations are accepted;
 #   4. CommoditySpace price bounds reach the low-level GEM model;
 #   5. existing Symbol-based add_agent! and solve behavior still works;
-#   6. CommodityRef selectors are still deliberately deferred to STEP 4.
+#   6. CommodityRef selectors are accepted by the current add_agent! API.
 # ================================================================
 
 using Test
@@ -211,7 +211,7 @@ using GeneralEquilibriumModeling.GEMB
 
 
     # ------------------------------------------------------------
-    # 6. CommodityRef remains intentionally unavailable in add_agent!.
+    # 6. CommodityRef selectors are accepted in add_agent!.
     # ------------------------------------------------------------
 
     ref_model = GEMBModel(
@@ -225,7 +225,7 @@ using GeneralEquilibriumModeling.GEMB
         numeraire=:product_1,
     )
 
-    @test_throws ArgumentError add_agent!(
+    ref_firm = add_agent!(
         ref_model,
         CESSpec([1.0]);
         outputs=CommodityRef(
@@ -236,8 +236,10 @@ using GeneralEquilibriumModeling.GEMB
         name=:firm,
     )
 
-    @test isempty(ref_model.agents)
-    @test isempty(ref_model.agent_index)
+    @test ref_firm isa GEM.AbstractNetSupplyAgent
+    @test length(ref_model.agents) == 1
+    @test ref_model.agents[1] === ref_firm
+    @test ref_model.agent_index == Dict(:firm => 1)
 end
 
 println("GEMBModel CommoditySpace STEP 3 tests passed.")

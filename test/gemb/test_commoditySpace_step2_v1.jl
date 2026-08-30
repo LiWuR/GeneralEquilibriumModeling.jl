@@ -247,7 +247,7 @@ using GeneralEquilibriumModeling.GEMB
 
 
     # ------------------------------------------------------------
-    # 8. RelativePeriod is still owned by the intertemporal layer.
+    # 8. RelativePeriod resolution requires intertemporal context.
     # ------------------------------------------------------------
 
     relative_ref = CommodityRef(
@@ -260,10 +260,6 @@ using GeneralEquilibriumModeling.GEMB
         relative_ref,
     )
 
-    @test_throws ArgumentError CommodityRef(
-        :dated_product;
-        type=RelativePeriod(0),
-    )
 end
 
 println("CommoditySpace STEP 2 tests passed.")

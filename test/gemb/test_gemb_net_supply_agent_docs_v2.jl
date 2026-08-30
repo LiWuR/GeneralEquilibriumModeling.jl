@@ -1,6 +1,6 @@
 using Test
 
-root = raw"D:\Ju\GeneralEquilibriumModeling"
+root = normpath(joinpath(@__DIR__, "..", ".."))
 
 guide_path = joinpath(root, "docs", "src", "gemb", "custom_net_supply_agents.md")
 index_path = joinpath(root, "docs", "src", "gemb", "index.md")

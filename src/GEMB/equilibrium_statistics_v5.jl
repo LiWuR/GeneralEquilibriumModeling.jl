@@ -833,13 +833,16 @@ The display includes:
 
 - equilibrium prices;
 - agent activity / utility levels;
-- the commodity-by-agent net-supply matrix;
-- the commodity-by-agent net-supply value matrix;
-- total net supply by commodity; and
-- total net-supply value by agent.
+- the commodity-by-agent net-supply matrix, with total net supply by
+  commodity in a rightmost `Sum` column; and
+- the commodity-by-agent net-supply value matrix, with total net-supply
+  value by commodity in a rightmost `Sum` column and total net-supply
+  value by agent in a bottom `Sum` row.
 
-Rows of the two matrices follow `model.commodity_names`; columns follow
-`model.agent_refs`.
+Rows of the two matrices follow `model.commodity_names`; ordinary columns
+follow `model.agent_refs`. The added `Sum` row and column are display-only
+summaries and do not change the statistics returned by
+`equilibrium_statistics`.
 
 Values whose absolute magnitude does not exceed `display_tol` are displayed
 as zero. This affects display only; the stored equilibrium result and the
@@ -909,40 +912,73 @@ function print_equilibrium_statistics(
         sigdigits=sigdigits,
     )
 
+    sum_column_label =
+        "Sum"
+
+    net_supply_display =
+        hcat(
+            stats.net_supply_matrix,
+            stats.total_net_supply,
+        )
+
+    net_supply_column_labels =
+        vcat(
+            agent_labels,
+            sum_column_label,
+        )
+
     _print_statistics_matrix(
         io,
         "Net supply matrix",
         commodity_labels,
-        agent_labels,
-        stats.net_supply_matrix;
+        net_supply_column_labels,
+        net_supply_display;
         display_tol=display_tol,
         sigdigits=sigdigits,
     )
+
+    commodity_net_supply_values =
+        stats.prices .* stats.total_net_supply
+
+    grand_net_supply_value =
+        sum(
+            stats.agent_net_supply_values,
+        )
+
+    net_supply_value_display =
+        vcat(
+            hcat(
+                stats.net_supply_value_matrix,
+                commodity_net_supply_values,
+            ),
+            reshape(
+                vcat(
+                    stats.agent_net_supply_values,
+                    grand_net_supply_value,
+                ),
+                1,
+                :,
+            ),
+        )
+
+    net_supply_value_row_labels =
+        vcat(
+            commodity_labels,
+            "Sum",
+        )
+
+    net_supply_value_column_labels =
+        vcat(
+            agent_labels,
+            sum_column_label,
+        )
 
     _print_statistics_matrix(
         io,
         "Net supply value matrix",
-        commodity_labels,
-        agent_labels,
-        stats.net_supply_value_matrix;
-        display_tol=display_tol,
-        sigdigits=sigdigits,
-    )
-
-    _print_statistics_vector(
-        io,
-        "Agent net supply values",
-        agent_labels,
-        stats.agent_net_supply_values;
-        display_tol=display_tol,
-        sigdigits=sigdigits,
-    )
-
-    _print_statistics_vector(
-        io,
-        "Total net supply",
-        commodity_labels,
-        stats.total_net_supply;
+        net_supply_value_row_labels,
+        net_supply_value_column_labels,
+        net_supply_value_display;
         display_tol=display_tol,
         sigdigits=sigdigits,
     )

@@ -77,10 +77,8 @@ DOC_PAGES = [
             ],
             "Claims and taxes" => [
                 "Specific subsidy via claim" => "gemb/examples/gemb_CD_specificSubsidyClaim_nc3_na2_v1.md",
-                "Endogenous claim rate I" => "gemb/examples/gemb_CD_endogenousClaimRate_nc3_na3_v1.md",
-                "Endogenous claim rate II" => "gemb/examples/gemb_CD_endogenousClaimRate_nc3_na3_v2.md",
-                "Budget-balanced claim rate I" => "gemb/examples/gemb_CD_endogenousClaimRateBudget_nc3_na4_v1.md",
-                "Budget-balanced claim rate II" => "gemb/examples/gemb_CD_endogenousClaimRateBudget_nc3_na4_v2.md",
+                "Endogenous claim rate" => "gemb/examples/gemb_CD_endogenousClaimRate_nc3_na3_v2.md",
+                "Budget-balanced claim rate" => "gemb/examples/gemb_CD_endogenousClaimRateBudget_nc3_na4_v2.md",
             ],
             "Virtual-agent constructions" => [
                 "Exogenous land price" => "gemb/examples/gemb_exogenousLandPrice_nc3_na3_v6.md",

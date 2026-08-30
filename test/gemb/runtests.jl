@@ -134,6 +134,35 @@ include("test_agentTemplateClaimEquilibrium_step7c2_v1.jl")
     include("test_equilibriumStatistics_unified_v5.jl")
     include("test_equilibriumStatistics_print_v5.jl")
     include("test_equilibriumStatistics_agentLevels_v1.jl")
+
+    # ------------------------------------------------------------
+    # GEMBModel and CommoditySpace regression coverage
+    # ------------------------------------------------------------
+
+    include("test_commoditySpace_step2_v1.jl")
+    include("test_gembModel_v1.jl")
+    include("test_gembModel_commodityResolver_v1.jl")
+    include("test_gembModel_commoditySpaceStep3_v1.jl")
+    include("test_gembModel_commodityRefStep4_v1.jl")
+    include("test_gembModel_addAgentCoverage_v2.jl")
+    include("test_gembModel_claimName_v1.jl")
+    include("test_gembModel_noPureEndowment_v1.jl")
+    include("test_gembModel_buildModel_v1.jl")
+    include("test_gembModel_solveEquivalence_v1.jl")
+
+    # ------------------------------------------------------------
+    # Custom net-supply-agent high-level interface
+    # ------------------------------------------------------------
+
+    include("test_gemb_add_existing_net_supply_agent_v1.jl")
+    include("test_gemb_add_net_supply_agent_v1.jl")
+    include("test_gemb_net_supply_agent_docs_v2.jl")
+
+    # ------------------------------------------------------------
+    # Virtual-agent closure regression
+    # ------------------------------------------------------------
+
+    include("test_exogenousLandPrice_virtualAgent_v1.jl")
 end
 
 
