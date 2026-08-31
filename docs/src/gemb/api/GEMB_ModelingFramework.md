@@ -7,7 +7,7 @@ Modules = [GeneralEquilibriumModeling.GEMB]
 Pages = [
     "commodity_space_v3.jl",
     "agent_ref_v2.jl",
-    "gemb_model_v16.jl",
+    "gemb_model_v19.jl",
     "by_period_v1.jl",
     "relative_period_v1.jl",
     "relative_agent_refs_v1.jl",

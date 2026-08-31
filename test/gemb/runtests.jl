@@ -156,7 +156,6 @@ include("test_agentTemplateClaimEquilibrium_step7c2_v1.jl")
 
     include("test_gemb_add_existing_net_supply_agent_v1.jl")
     include("test_gemb_add_net_supply_agent_v1.jl")
-    include("test_gemb_net_supply_agent_docs_v2.jl")
 
     # ------------------------------------------------------------
     # Virtual-agent closure regression
@@ -175,3 +174,33 @@ end
 # ------------------------------------------------------------
 # Equilibrium statistics agent levels
 # ------------------------------------------------------------
+
+# ------------------------------------------------------------
+# Agent economic records STEP 1
+# ------------------------------------------------------------
+include("test_agentRecords_step1_v1.jl")
+
+# ------------------------------------------------------------
+# Agent economic records STEP 2
+# ------------------------------------------------------------
+include("test_agentRecords_step2_v1.jl")
+
+# ------------------------------------------------------------
+# Agent economic records STEP 3
+# ------------------------------------------------------------
+include("test_agentRecords_step3_v4.jl")
+
+# ------------------------------------------------------------
+# Agent economic records STEP 4
+# ------------------------------------------------------------
+include("test_agentRecords_step4_v1.jl")
+
+# ------------------------------------------------------------
+# Single-agent gross demand / gross supply STEP 5
+# ------------------------------------------------------------
+include("test_agentDemandSupply_step5_v1.jl")
+
+# ------------------------------------------------------------
+# Model-wide gross demand / gross supply STEP 6
+# ------------------------------------------------------------
+include("test_demandSupplyMatrices_step6_v1.jl")

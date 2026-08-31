@@ -101,7 +101,22 @@ export CES,
 # ================================================================
 # High-level mutable equilibrium model
 # ================================================================
-include("gemb_model_v16.jl")
+# ================================================================
+# High-level economic-agent records
+# ================================================================
+include("agent_records_v1.jl")
+
+include("gemb_model_v19.jl")
+
+# ================================================================
+# Single-agent gross demand and gross supply evaluation
+# ================================================================
+include("agent_demand_supply_v1.jl")
+
+# ================================================================
+# Model-wide gross demand and gross supply matrices
+# ================================================================
+include("demand_supply_matrices_v1.jl")
 include("by_period_v1.jl")
 include("relative_period_v1.jl")
 include("relative_agent_refs_v1.jl")

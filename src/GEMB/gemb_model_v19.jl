@@ -1,7 +1,42 @@
 # ================================================================
-# gemb_model_v16.jl
+# gemb_model_v19.jl
 #
 # High-level equilibrium-model container for GEMB.
+#
+# V19 AGENT RECORDS STEP 4 retains Activity-demand economic structure.
+#
+# Relative to V18:
+#
+#   - the generic high-level `add_agent!(model, spec; ...)` path stores an
+#     `ActivityDemandAgentRecord` whenever `spec isa AbstractActivityDemandSpec`;
+#   - the record keeps the original spec, resolved commodity mappings,
+#     resolved claim index, and normalized builder keyword payload;
+#   - all other specification families continue to receive
+#     `NetSupplyOnlyAgentRecord()`;
+#   - `build_agent`, all net-supply functions, GEM materialization, and
+#     equilibrium solving remain unchanged.
+#
+#
+# V18 AGENT RECORDS STEP 3 integrates economic records into registration.
+#
+# Relative to V17:
+#
+#   - `_register_agent!` accepts optional economic record metadata;
+#   - existing callers default to `NetSupplyOnlyAgentRecord()`;
+#   - `agents`, `agent_refs`, and `agent_records` are inserted together;
+#   - no add_agent! call site, builder, net-supply function, or solver path
+#     changes in this step.
+#
+#
+# V17 AGENT RECORDS STEP 2 adds storage for economic-agent records.
+#
+# Relative to V16:
+#
+#   - GEMBModel adds `agent_records::Vector{AbstractAgentRecord}`;
+#   - the public GEMBModel constructor initializes that registry empty;
+#   - no agent-registration path writes to the new registry yet;
+#   - no agent construction, net-supply evaluation, GEM materialization,
+#     or equilibrium-solving behavior changes in this step.
 #
 # V16 STEP 3 adds the public high-level custom net-supply-agent entry point.
 #
@@ -117,6 +152,7 @@ mutable struct GEMBModel{T<:Real,S}
 
     agents::Vector{GEM.AbstractNetSupplyAgent}
     agent_refs::Vector{AgentRef}
+    agent_records::Vector{AbstractAgentRecord}
     agent_index::Dict{Symbol,Int}
     agent_ref_index::Dict{AgentRef,Int}
 
@@ -372,6 +408,7 @@ function GEMBModel(
         flat_index,
         GEM.AbstractNetSupplyAgent[],
         AgentRef[],
+        AbstractAgentRecord[],
         Dict{Symbol,Int}(),
         Dict{AgentRef,Int}(),
         selected_numeraire,
@@ -594,15 +631,18 @@ end
 Commit one fully constructed low-level agent to all aligned `GEMBModel`
 agent registries.
 
-This internal helper updates `agents`, `agent_refs`, `agent_index`, and
-`agent_ref_index` together. Callers should complete all construction and
-validation that can fail before invoking it.
+This internal helper updates `agents`, `agent_refs`, `agent_records`,
+`agent_index`, and `agent_ref_index` together. Existing callers that do not
+supply an economic record receive `NetSupplyOnlyAgentRecord()` by default.
+Callers should complete all construction and validation that can fail before
+invoking it.
 """
 function _register_agent!(
     model::GEMBModel,
     agent::GEM.AbstractNetSupplyAgent,
     agent_ref::AgentRef,
-    flat_name::Symbol,
+    flat_name::Symbol;
+    record::AbstractAgentRecord=NetSupplyOnlyAgentRecord(),
 )
     _check_new_agent_identity(
         model,
@@ -620,8 +660,21 @@ function _register_agent!(
         agent_ref,
     )
 
+    push!(
+        model.agent_records,
+        record,
+    )
+
     position =
         length(model.agents)
+
+    length(model.agent_refs) == position || error(
+        "Internal GEMB agent registry misalignment: agent_refs.",
+    )
+
+    length(model.agent_records) == position || error(
+        "Internal GEMB agent registry misalignment: agent_records.",
+    )
 
     model.agent_index[flat_name] =
         position
@@ -1195,11 +1248,26 @@ function add_agent!(
     end
 
     # Commit all aligned agent-registry state only after construction succeeds.
+    # Retain the economic representation used to construct this agent.
+    record = if spec isa AbstractActivityDemandSpec
+        ActivityDemandAgentRecord(
+            spec,
+            output_indices,
+            demand_indices,
+            endowment_indices;
+            claim_index=claim_index,
+            build_kwargs=(; kwargs...),
+        )
+    else
+        NetSupplyOnlyAgentRecord()
+    end
+
     return _register_agent!(
         model,
         agent,
         agent_ref,
         flat_name,
+            record=record,
     )
 end
 
