@@ -1,8 +1,8 @@
 # ================================================================
 # demand_supply_matrices_v1.jl
 #
-# Model-wide gross-demand / gross-supply matrices for the GEMB
-# high-level framework.
+# Model-wide gross-demand / gross-supply matrices and their value matrices
+# for the GEMB high-level framework.
 #
 # Core design:
 #
@@ -110,6 +110,7 @@ end
 function _assemble_demand_supply_matrices(
     model::GEMBModel,
     local_results,
+    prices,
 )
     n_agents =
         length(model.agents)
@@ -213,10 +214,79 @@ function _assemble_demand_supply_matrices(
         "Internal GEMB demand/supply matrix identity failed: S - D != N.",
     )
 
+    price_column =
+        reshape(
+            collect(prices),
+            :,
+            1,
+        )
+
+    DV =
+        price_column .* D
+
+    SV =
+        price_column .* S
+
+    total_demand =
+        vec(
+            sum(
+                D;
+                dims=2,
+            ),
+        )
+
+    total_supply =
+        vec(
+            sum(
+                S;
+                dims=2,
+            ),
+        )
+
+    total_demand_value =
+        vec(
+            sum(
+                DV;
+                dims=2,
+            ),
+        )
+
+    total_supply_value =
+        vec(
+            sum(
+                SV;
+                dims=2,
+            ),
+        )
+
+    agent_expenditure =
+        vec(
+            sum(
+                DV;
+                dims=1,
+            ),
+        )
+
+    agent_revenue =
+        vec(
+            sum(
+                SV;
+                dims=1,
+            ),
+        )
+
     return (
         demand=D,
         supply=S,
         net_supply=N,
+        demand_value=DV,
+        supply_value=SV,
+        total_demand=total_demand,
+        total_supply=total_supply,
+        total_demand_value=total_demand_value,
+        total_supply_value=total_supply_value,
+        agent_expenditure=agent_expenditure,
+        agent_revenue=agent_revenue,
     )
 end
 
@@ -296,6 +366,7 @@ function demand_supply_matrices(
     return _assemble_demand_supply_matrices(
         model,
         local_results,
+        prices,
     )
 end
 

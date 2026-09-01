@@ -327,3 +327,110 @@ using GeneralEquilibriumModeling
 end
 
 println("GEMB demand/supply matrices STEP 6 tests passed.")
+@testset "GEMB demand/supply value matrices" begin
+    GEMB =
+        GeneralEquilibriumModeling.GEMB
+
+    model =
+        GEMB.GEMBModel(
+            [:product, :labor];
+            numeraire=:product,
+        )
+
+    GEMB.add_agent!(
+        model,
+        GEMB.CESSpec([1.0]);
+        outputs=:product,
+        demands=:labor,
+        activity_start=100.0,
+        name=:firm,
+    )
+
+    GEMB.add_agent!(
+        model,
+        GEMB.CESSpec([1.0]);
+        demands=:product,
+        endowments=:labor,
+        endowment_quantities=10.0,
+        activity_start=100.0,
+        name=:consumer,
+    )
+
+    prices =
+        [2.0, 3.0]
+
+    flows =
+        GEMB.demand_supply_matrices(
+            model,
+            [
+                [4.0],
+                [5.0],
+            ],
+            prices,
+        )
+
+    D =
+        [
+            0.0  5.0
+            4.0  0.0
+        ]
+
+    S =
+        [
+            4.0   0.0
+            0.0  10.0
+        ]
+
+    DV =
+        [
+             0.0  10.0
+            12.0   0.0
+        ]
+
+    SV =
+        [
+            8.0   0.0
+            0.0  30.0
+        ]
+
+    @test flows.demand ≈ D
+    @test flows.supply ≈ S
+
+    @test flows.demand_value ≈ DV
+    @test flows.supply_value ≈ SV
+
+    # D and S: economically meaningful commodity totals only.
+    @test flows.total_demand ≈
+          [5.0, 4.0]
+
+    @test flows.total_supply ≈
+          [4.0, 10.0]
+
+    # DV and SV: both commodity totals and agent totals are meaningful.
+    @test flows.total_demand_value ≈
+          [10.0, 12.0]
+
+    @test flows.total_supply_value ≈
+          [8.0, 30.0]
+
+    @test flows.agent_expenditure ≈
+          [12.0, 10.0]
+
+    @test flows.agent_revenue ≈
+          [8.0, 30.0]
+
+    # Value matrices are simply price-weighted quantity matrices.
+    price_column =
+        reshape(
+            prices,
+            :,
+            1,
+        )
+
+    @test flows.demand_value ≈
+          price_column .* flows.demand
+
+    @test flows.supply_value ≈
+          price_column .* flows.supply
+end
+

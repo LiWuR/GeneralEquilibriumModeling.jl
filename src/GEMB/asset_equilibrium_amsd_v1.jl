@@ -408,6 +408,22 @@ Required economic inputs:
 - `PSD`: subjective payoff standard deviations;
 - `Cor`: payoff correlation matrix shared by the investors.
 
+Optional arguments:
+
+- `numeraire_index`: index of the numeraire asset; defaults to the final asset.
+- `numeraire_value`: price of the numeraire asset; default `1.0`.
+- `p0`: initial asset-price vector; defaults to a vector of ones.
+- `x0`: initial asset-holding matrix for numerical solution; defaults to `Supply`.
+- `lambda0`: initial budget-multiplier vector; defaults to a vector of ones.
+- `demand_upper_bounds`: upper bounds on asset holdings; defaults to aggregate asset supplies.
+- `price_floor`: lower bound on asset prices.
+- `price_upper_bound`: upper bound on asset prices.
+- `residual_tol`: equilibrium residual tolerance.
+- `holding_tol`: tolerance used to identify positive holdings.
+- `kkt_tol`: tolerance for KKT diagnostics.
+- `silent`: suppress solver output when `true`.
+- `path_options`: additional PATH solver options.
+
 Investor `i` is represented internally by
 
     MeanStandardDeviationMarginalUtilitySpec(
