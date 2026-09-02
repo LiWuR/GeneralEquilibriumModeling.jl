@@ -24,8 +24,8 @@ with the following fields:
 ```julia
 stats.prices
 
-stats.agent_levels
-stats.agent_level_refs
+stats.activity_levels
+stats.activity_level_refs
 
 stats.net_supply_matrix
 stats.net_supply_value_matrix
@@ -36,24 +36,26 @@ stats.commodity_names
 stats.agent_refs
 ```
 
-## Agent levels
+## Activity levels
 
-`stats.agent_levels` collects the explicitly represented activity levels and
-utility levels in the solved model.
+`stats.activity_levels` collects the explicitly represented activity levels in
+the solved model. The economic interpretation of an activity level depends on
+the representation of the agent. For example, it may represent a production
+activity level or a consumer's utility level.
 
 The ordering is first by agent order and then by the existing variable order
-within each agent. `stats.agent_level_refs` has the same length and identifies
-the owner of each level.
+within each agent. `stats.activity_level_refs` has the same length and
+identifies the agent that owns each activity level.
 
 A multi-activity agent therefore contributes more than one entry to
-`agent_levels`, and the same agent reference appears repeatedly in
-`agent_level_refs`. An agent without an activity or utility level contributes
-no entry.
+`activity_levels`, and the same agent reference appears repeatedly in
+`activity_level_refs`. An agent without an explicitly represented activity
+level contributes no entry.
 
-The statistics layer includes the standard GEMB level variables `:activity`
-and `:utility`, together with activity variables whose names begin with
-`activity_`. Other endogenous variables, such as input quantities, multipliers,
-claim quantities, and auxiliary variables, are not included in `agent_levels`.
+The statistics layer recognizes `:activity`, `:activity_*`, and `:utility` as
+standard activity-level variables. Other endogenous agent variables, such as
+input quantities, multipliers, claim quantities, and auxiliary variables, are
+not included in `activity_levels`.
 
 ## Net-supply matrix
 
@@ -137,7 +139,7 @@ print_equilibrium_statistics(model, result)
 The display contains:
 
 - equilibrium prices;
-- agent activity and utility levels;
+- activity levels;
 - the net-supply matrix;
 - the net-supply value matrix;
 - net-supply value by agent; and

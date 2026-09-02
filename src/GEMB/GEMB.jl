@@ -145,7 +145,7 @@ export AgentRef
 # ================================================================
 # Equilibrium statistics
 # ================================================================
-include("equilibrium_statistics_v5.jl")
+include("equilibrium_statistics_v6.jl")
 export net_supply_matrix
 
 export net_supply_value_matrix

@@ -44,7 +44,7 @@ attached to agents, including ad valorem claims that represent proportional righ
 - Direct access to GEM's equilibrium models, price bounds, auxiliary variables,
   and MCP solver when additional control is required
 - Structured equilibrium results and diagnostics inherited from GEM
-- Post-solve [equilibrium statistics](equilibrium_statistics.md) for agent levels, net supplies, and value statistics
+- Post-solve [equilibrium statistics](equilibrium_statistics.md) for activity levels, net supplies, and value statistics
 
 ## Basic workflow
 

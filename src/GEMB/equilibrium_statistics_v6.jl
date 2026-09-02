@@ -1,9 +1,9 @@
 # ================================================================
-# equilibrium_statistics_v5.jl
+# equilibrium_statistics_v6.jl
 #
 # GEMB equilibrium-statistics layer.
 #
-# V5 provides:
+# V6 provides:
 #
 #   net_supply_matrix
 #   net_supply_value_matrix
@@ -260,10 +260,10 @@ end
 
 
 # ----------------------------------------------------------------
-# Agent activity / utility levels
+# Activity levels
 # ----------------------------------------------------------------
 
-function _is_agent_level_variable_name(
+function _is_activity_level_variable_name(
     name::Symbol,
 )
     name === :utility &&
@@ -279,7 +279,7 @@ function _is_agent_level_variable_name(
 end
 
 
-function _agent_levels(
+function _activity_levels(
     model::GEMBModel,
     result::GEM.EquilibriumResult,
 )
@@ -287,16 +287,16 @@ function _agent_levels(
         result,
         :agent_variable_names,
     ) || return (
-        agent_levels=Float64[],
-        agent_level_refs=AgentRef[],
+        activity_levels=Float64[],
+        activity_level_refs=AgentRef[],
     )
 
     hasproperty(
         result,
         :agent_variable_values,
     ) || return (
-        agent_levels=Float64[],
-        agent_level_refs=AgentRef[],
+        activity_levels=Float64[],
+        activity_level_refs=AgentRef[],
     )
 
     variable_names =
@@ -358,7 +358,7 @@ function _agent_levels(
                 ),
             )
 
-            _is_agent_level_variable_name(
+            _is_activity_level_variable_name(
                 name,
             ) || continue
 
@@ -367,7 +367,7 @@ function _agent_levels(
 
             value isa Real || throw(
                 ArgumentError(
-                    "Agent level values must be real numbers; got " *
+                    "Activity level values must be real numbers; got " *
                     "$(typeof(value)) for agent $(repr(model.agent_refs[j])).",
                 ),
             )
@@ -406,8 +406,8 @@ function _agent_levels(
         end
 
     return (
-        agent_levels=levels,
-        agent_level_refs=refs,
+        activity_levels=levels,
+        activity_level_refs=refs,
     )
 end
 
@@ -420,8 +420,8 @@ Collect the current GEMB equilibrium statistics into one named tuple.
 The returned fields are:
 
 - `prices`
-- `agent_levels`
-- `agent_level_refs`
+- `activity_levels`
+- `activity_level_refs`
 - `net_supply_matrix`
 - `net_supply_value_matrix`
 - `total_net_supply`
@@ -432,13 +432,15 @@ The returned fields are:
 The function does not solve or re-evaluate the model. It only reorganizes
 the already computed equilibrium result.
 
-`agent_levels` contains all explicitly represented activity levels and utility
-levels, flattened first by agent order and then by each agent's existing
-variable order. `agent_level_refs` has the same length and identifies the
+`activity_levels` contains all explicitly represented activity levels, flattened
+first by agent order and then by each agent's existing variable order. The
+economic interpretation of an activity level depends on the representation of
+the agent; for example, it may represent a production activity level or a
+consumer's utility level. `activity_level_refs` has the same length and identifies the
 GEMB agent that owns each level. A multi-activity agent therefore appears
-multiple times in `agent_level_refs`.
+multiple times in `activity_level_refs`.
 
-The statistics layer recognizes the standard GEMB level-variable names
+The statistics layer recognizes the standard GEMB activity-level variable names
 `:activity`, `:activity_*`, and `:utility`. Other endogenous variables such as
 input quantities, multipliers, claim quantities, or custom auxiliary
 variables are not included.
@@ -466,8 +468,8 @@ function equilibrium_statistics(
         ),
     )
 
-    level_data =
-        _agent_levels(
+    activity_data =
+        _activity_levels(
             model,
             result,
         )
@@ -499,11 +501,11 @@ function equilibrium_statistics(
         prices =
             copy(prices),
 
-        agent_levels =
-            level_data.agent_levels,
+        activity_levels =
+            activity_data.activity_levels,
 
-        agent_level_refs =
-            level_data.agent_level_refs,
+        activity_level_refs =
+            activity_data.activity_level_refs,
 
         net_supply_matrix =
             N,
@@ -832,7 +834,7 @@ Print the current GEMB equilibrium statistics.
 The display includes:
 
 - equilibrium prices;
-- agent activity / utility levels;
+- activity levels;
 - the commodity-by-agent net-supply matrix, with total net supply by
   commodity in a rightmost `Sum` column; and
 - the commodity-by-agent net-supply value matrix, with total net-supply
@@ -895,19 +897,19 @@ function print_equilibrium_statistics(
         sigdigits=sigdigits,
     )
 
-    level_agent_labels =
+    activity_agent_labels =
         [
             _statistics_agent_label(
                 ref,
             )
-            for ref in stats.agent_level_refs
+            for ref in stats.activity_level_refs
         ]
 
     _print_statistics_vector(
         io,
-        "Agent levels",
-        level_agent_labels,
-        stats.agent_levels;
+        "Activity levels",
+        activity_agent_labels,
+        stats.activity_levels;
         display_tol=display_tol,
         sigdigits=sigdigits,
     )

@@ -1,5 +1,5 @@
 # ================================================================
-# test_equilibriumStatistics_unified_v5.jl
+# test_equilibriumStatistics_unified_v6.jl
 #
 # Regression tests for the unified GEMB equilibrium-statistics interface.
 #
@@ -79,8 +79,8 @@ using GeneralEquilibriumModeling
     @test stats.prices ==
           [2.0, 3.0, 4.0]
 
-    @test isempty(stats.agent_levels)
-    @test isempty(stats.agent_level_refs)
+    @test isempty(stats.activity_levels)
+    @test isempty(stats.activity_level_refs)
 
     @test stats.net_supply_matrix ==
           expected_N
@@ -103,8 +103,8 @@ using GeneralEquilibriumModeling
     @test propertynames(stats) ==
           (
               :prices,
-              :agent_levels,
-              :agent_level_refs,
+              :activity_levels,
+              :activity_level_refs,
               :net_supply_matrix,
               :net_supply_value_matrix,
               :total_net_supply,
@@ -141,4 +141,4 @@ using GeneralEquilibriumModeling
     @test model.commodity_names[1] == :product
 end
 
-println("GEMB equilibrium-statistics unified V5 tests passed.")
+println("GEMB equilibrium-statistics unified V6 tests passed.")

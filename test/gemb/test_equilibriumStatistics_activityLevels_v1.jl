@@ -1,10 +1,10 @@
 # ================================================================
-# test_equilibriumStatistics_agentLevels_v1.jl
+# test_equilibriumStatistics_activityLevels_v1.jl
 #
 # Regression tests for:
 #
-#   stats.agent_levels
-#   stats.agent_level_refs
+#   stats.activity_levels
+#   stats.activity_level_refs
 #
 # The test verifies:
 #   - standard single activity;
@@ -21,7 +21,7 @@ using Test
 using GeneralEquilibriumModeling
 
 
-@testset "GEMB equilibrium statistics: agent levels" begin
+@testset "GEMB equilibrium statistics: activity levels" begin
 
     model =
         GeneralEquilibriumModeling.GEMB.GEMBModel(
@@ -83,7 +83,7 @@ using GeneralEquilibriumModeling
         name=:consumer,
     )
 
-    # Custom endogenous non-level variable: must not enter agent_levels.
+    # Custom endogenous non-level variable: must not enter activity_levels.
     GeneralEquilibriumModeling.GEMB.add_net_supply_agent!(
         model,
         (local_variables, local_prices, observed_values=Any[]) ->
@@ -143,10 +143,10 @@ using GeneralEquilibriumModeling
             result,
         )
 
-    @test stats.agent_levels ==
+    @test stats.activity_levels ==
           [100.0, 40.0, 60.0, 12.5]
 
-    @test stats.agent_level_refs ==
+    @test stats.activity_level_refs ==
           [
               GeneralEquilibriumModeling.GEMB.AgentRef(:firm1),
               GeneralEquilibriumModeling.GEMB.AgentRef(:firm2),
@@ -154,19 +154,23 @@ using GeneralEquilibriumModeling
               GeneralEquilibriumModeling.GEMB.AgentRef(:consumer),
           ]
 
-    @test length(stats.agent_levels) ==
-          length(stats.agent_level_refs)
+    @test length(stats.activity_levels) ==
+          length(stats.activity_level_refs)
+
+    # The superseded public field names are intentionally absent.
+    @test !hasproperty(stats, Symbol("agent_" * "levels"))
+    @test !hasproperty(stats, Symbol("agent_" * "level_refs"))
 
     # The custom non-level variables are excluded.
-    @test 7.0 ∉ stats.agent_levels
-    @test 3.0 ∉ stats.agent_levels
+    @test 7.0 ∉ stats.activity_levels
+    @test 3.0 ∉ stats.activity_levels
 
     # Multi-activity ownership is represented by repeating the same AgentRef.
     @test count(
         ==(
             GeneralEquilibriumModeling.GEMB.AgentRef(:firm2),
         ),
-        stats.agent_level_refs,
+        stats.activity_level_refs,
     ) == 2
 
     io =
@@ -186,7 +190,7 @@ using GeneralEquilibriumModeling
         )
 
     @test occursin(
-        "Agent levels",
+        "Activity levels",
         output,
     )
 
@@ -235,4 +239,4 @@ using GeneralEquilibriumModeling
 end
 
 
-println("GEMB equilibrium-statistics agent-level tests passed.")
+println("GEMB equilibrium-statistics activity-level tests passed.")
