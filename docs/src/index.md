@@ -1,14 +1,11 @@
 # GeneralEquilibriumModeling.jl
 
-`GeneralEquilibriumModeling.jl` is a Julia package for general equilibrium
-modeling. It contains two coordinated submodules:
+`GeneralEquilibriumModeling.jl` is a Julia package for general equilibrium modeling. It contains two coordinated submodules:
 
-- `GEM`: the low-level equilibrium-modeling and solver layer.
-- `GEMB`: the higher-level model-building layer built on top of `GEM`.
+* `GEM`: the low-level equilibrium-modeling and solver layer.
+* `GEMB`: the higher-level model-building layer built on top of `GEM`.
 
-## Related book
-
-For a systematic introduction to the general equilibrium modeling methods related to this package, see [*GeneralEquilibriumModeling.jl and Structural Equilibrium Models: A Cookbook*](https://liwur.github.io/GEMBook/).
+## Getting started
 
 The package is loaded with:
 
@@ -16,7 +13,7 @@ The package is loaded with:
 using GeneralEquilibriumModeling
 ```
 
-The two modeling layers can then be accessed as:
+The two submodules can then be accessed as:
 
 ```julia
 GEM.NetSupplyAgent
@@ -43,7 +40,9 @@ GeneralEquilibriumModeling
 └── GEMB  # high-level builders and economic specifications
 ```
 
-The documentation is organized into the `GEM` core documentation and the
-`GEMB` builder documentation. Example programs are also kept in separate
-`gem` and `gemb` groups so that the two modeling layers remain easy to
-distinguish.
+The documentation is organized into the `GEM` core documentation and the `GEMB` builder documentation. Example programs are also kept in separate `gem` and `gemb` groups so that the two modeling layers remain easy to distinguish.
+
+## Related book
+
+For a systematic introduction to the general equilibrium modeling methods related to this package, see [*GeneralEquilibriumModeling.jl and Structural Equilibrium Models: A Cookbook*](https://liwur.github.io/GEMBook/).
+
