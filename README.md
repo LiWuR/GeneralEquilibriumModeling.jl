@@ -4,7 +4,7 @@
 [![Documentation](https://img.shields.io/badge/docs-dev-blue.svg)](https://LiWuR.github.io/GeneralEquilibriumModeling.jl/dev/)
 [![codecov](https://codecov.io/gh/LiWuR/GeneralEquilibriumModeling.jl/graph/badge.svg)](https://codecov.io/gh/LiWuR/GeneralEquilibriumModeling.jl)
 
-**GeneralEquilibriumModeling.jl** is a Julia package for general-equilibrium modeling. It combines a low-level equilibrium engine with a higher-level model-building layer in one package:
+**GeneralEquilibriumModeling.jl** is a Julia package for general equilibrium modeling. It combines a low-level equilibrium engine with a higher-level model-building layer in one package:
 
 - **`GEM`**: core equilibrium representation, complementarity conditions, JuMP construction, and solver interfaces.
 - **`GEMB`**: higher-level economic specifications, agent builders, model templates, and intertemporal modeling tools built on top of `GEM`.
@@ -127,6 +127,9 @@ Development documentation is hosted at:
 https://LiWuR.github.io/GeneralEquilibriumModeling.jl/dev/
 
 The manual is organized into separate `GEM` and `GEMB` sections, with API references, modeling guides, and worked examples for each layer.
+
+For a systematic introduction to the general equilibrium modeling methods related to this package, see
+[*GeneralEquilibriumModeling.jl and Structural Equilibrium Models: A Cookbook*](https://liwur.github.io/GEMBook/).
 
 ## License
 
