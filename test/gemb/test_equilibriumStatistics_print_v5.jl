@@ -155,6 +155,52 @@ using GeneralEquilibriumModeling
     )
 
     # Display formatting must not mutate stored result data.
+    # Matrix displays can be suppressed for large models.
+    compact_io =
+        IOBuffer()
+
+    compact_returned =
+        GeneralEquilibriumModeling.GEMB.print_equilibrium_statistics(
+            compact_io,
+            model,
+            result;
+            show_matrices=false,
+        )
+
+    @test compact_returned === nothing
+
+    compact_output =
+        String(
+            take!(
+                compact_io,
+            ),
+        )
+
+    @test occursin(
+        "GEMB Equilibrium Statistics",
+        compact_output,
+    )
+
+    @test occursin(
+        "Prices",
+        compact_output,
+    )
+
+    @test occursin(
+        "Activity levels",
+        compact_output,
+    )
+
+    @test !occursin(
+        "Net supply matrix",
+        compact_output,
+    )
+
+    @test !occursin(
+        "Net supply value matrix",
+        compact_output,
+    )
+
     @test result.prices ==
           [2.0, 3.0, 4.0]
 

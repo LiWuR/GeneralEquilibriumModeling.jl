@@ -827,6 +827,7 @@ end
         result::GEM.EquilibriumResult;
         display_tol=1.0e-10,
         sigdigits=8,
+        show_matrices=true,
     )
 
 Print the current GEMB equilibrium statistics.
@@ -834,7 +835,7 @@ Print the current GEMB equilibrium statistics.
 The display includes:
 
 - equilibrium prices;
-- activity levels;
+- activity levels; and, when `show_matrices=true`,
 - the commodity-by-agent net-supply matrix, with total net supply by
   commodity in a rightmost `Sum` column; and
 - the commodity-by-agent net-supply value matrix, with total net-supply
@@ -846,6 +847,9 @@ follow `model.agent_refs`. The added `Sum` row and column are display-only
 summaries and do not change the statistics returned by
 `equilibrium_statistics`.
 
+Set `show_matrices=false` to suppress both matrix displays. The matrices
+remain available in the statistics returned by `equilibrium_statistics`.
+
 Values whose absolute magnitude does not exceed `display_tol` are displayed
 as zero. This affects display only; the stored equilibrium result and the
 statistics returned by `equilibrium_statistics` are not modified.
@@ -856,6 +860,7 @@ function print_equilibrium_statistics(
     result::GEM.EquilibriumResult;
     display_tol::Real=1.0e-10,
     sigdigits::Integer=8,
+    show_matrices::Bool=true,
 )
     _check_statistics_display_arguments(
         display_tol,
@@ -914,76 +919,79 @@ function print_equilibrium_statistics(
         sigdigits=sigdigits,
     )
 
-    sum_column_label =
-        "Sum"
+    if show_matrices
+        sum_column_label =
+            "Sum"
 
-    net_supply_display =
-        hcat(
-            stats.net_supply_matrix,
-            stats.total_net_supply,
-        )
-
-    net_supply_column_labels =
-        vcat(
-            agent_labels,
-            sum_column_label,
-        )
-
-    _print_statistics_matrix(
-        io,
-        "Net supply matrix",
-        commodity_labels,
-        net_supply_column_labels,
-        net_supply_display;
-        display_tol=display_tol,
-        sigdigits=sigdigits,
-    )
-
-    commodity_net_supply_values =
-        stats.prices .* stats.total_net_supply
-
-    grand_net_supply_value =
-        sum(
-            stats.agent_net_supply_values,
-        )
-
-    net_supply_value_display =
-        vcat(
+        net_supply_display =
             hcat(
-                stats.net_supply_value_matrix,
-                commodity_net_supply_values,
-            ),
-            reshape(
-                vcat(
-                    stats.agent_net_supply_values,
-                    grand_net_supply_value,
-                ),
-                1,
-                :,
-            ),
-        )
+                stats.net_supply_matrix,
+                stats.total_net_supply,
+            )
 
-    net_supply_value_row_labels =
-        vcat(
+        net_supply_column_labels =
+            vcat(
+                agent_labels,
+                sum_column_label,
+            )
+
+        _print_statistics_matrix(
+            io,
+            "Net supply matrix",
             commodity_labels,
-            "Sum",
+            net_supply_column_labels,
+            net_supply_display;
+            display_tol=display_tol,
+            sigdigits=sigdigits,
         )
 
-    net_supply_value_column_labels =
-        vcat(
-            agent_labels,
-            sum_column_label,
+        commodity_net_supply_values =
+            stats.prices .* stats.total_net_supply
+
+        grand_net_supply_value =
+            sum(
+                stats.agent_net_supply_values,
+            )
+
+        net_supply_value_display =
+            vcat(
+                hcat(
+                    stats.net_supply_value_matrix,
+                    commodity_net_supply_values,
+                ),
+                reshape(
+                    vcat(
+                        stats.agent_net_supply_values,
+                        grand_net_supply_value,
+                    ),
+                    1,
+                    :,
+                ),
+            )
+
+        net_supply_value_row_labels =
+            vcat(
+                commodity_labels,
+                "Sum",
+            )
+
+        net_supply_value_column_labels =
+            vcat(
+                agent_labels,
+                sum_column_label,
+            )
+
+        _print_statistics_matrix(
+            io,
+            "Net supply value matrix",
+            net_supply_value_row_labels,
+            net_supply_value_column_labels,
+            net_supply_value_display;
+            display_tol=display_tol,
+            sigdigits=sigdigits,
         )
 
-    _print_statistics_matrix(
-        io,
-        "Net supply value matrix",
-        net_supply_value_row_labels,
-        net_supply_value_column_labels,
-        net_supply_value_display;
-        display_tol=display_tol,
-        sigdigits=sigdigits,
-    )
+    end
 
     println(
         io,

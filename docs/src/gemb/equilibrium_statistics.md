@@ -145,7 +145,7 @@ The display contains:
 - net-supply value by agent; and
 - total net supply by commodity.
 
-Two display options are available:
+Three display options are available:
 
 ```julia
 print_equilibrium_statistics(
@@ -153,8 +153,13 @@ print_equilibrium_statistics(
     result;
     display_tol=1.0e-10,
     sigdigits=8,
+    show_matrices=true,
 )
 ```
+
+Set `show_matrices=false` to suppress the net-supply matrix and the
+net-supply value matrix. The matrices remain available through
+`stats.net_supply_matrix` and `stats.net_supply_value_matrix`.
 
 Values whose absolute magnitude does not exceed `display_tol` are displayed as
 zero. This affects only printing; the equilibrium result and the statistics
